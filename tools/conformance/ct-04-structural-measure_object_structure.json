@@ -1,0 +1,33 @@
+{
+  "id": "CT-04",
+  "category": "structural",
+  "name": "Measure object structure",
+  "description": "Verifies that bau_measure, ps_measure, and delta conform to their typed sub-object definitions \u2014 value:number, unit:string, direction:enum.",
+  "mof_rule": "M2 typed attribute \u2014 BaselineMetric.value[Number], BaselineMetric.unit[String]",
+  "pass_fixture": {
+    "role": "cto-agent",
+    "problem": "refactoring drag",
+    "bau_measure": {
+      "value": 240,
+      "unit": "minutes"
+    },
+    "ps_measure": {
+      "value": 30,
+      "unit": "minutes"
+    },
+    "delta": {
+      "value": 210,
+      "unit": "minutes",
+      "direction": "reduction"
+    }
+  },
+  "fail_fixture": {
+    "role": "cto-agent",
+    "problem": "refactoring drag",
+    "bau_measure": {
+      "value": "not-a-number",
+      "unit": "minutes"
+    }
+  },
+  "assertion": "pass_fixture validates; fail_fixture raises ValidationError on bau_measure.value type"
+}

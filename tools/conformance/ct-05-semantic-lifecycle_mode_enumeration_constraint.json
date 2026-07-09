@@ -1,0 +1,18 @@
+{
+  "id": "CT-05",
+  "category": "semantic",
+  "name": "lifecycle_mode enumeration constraint",
+  "description": "Verifies lifecycle_mode accepts only: active | completed | suspended | archived | null.",
+  "mof_rule": "M2 enumeration LifecycleMode \u2014 four valid literals plus null",
+  "pass_fixture": {
+    "role": "cmo-agent",
+    "problem": "conversion leakage",
+    "lifecycle_mode": "active"
+  },
+  "fail_fixture": {
+    "role": "cmo-agent",
+    "problem": "conversion leakage",
+    "lifecycle_mode": "running"
+  },
+  "assertion": "pass_fixture validates; fail_fixture raises ValidationError on lifecycle_mode enum"
+}

@@ -1,0 +1,19 @@
+{
+  "id": "CT-13",
+  "category": "interchange",
+  "name": "JSON serialization round-trip",
+  "description": "Verifies a conformant AAEI record can be serialized to JSON and deserialized back to an identical structure without data loss.",
+  "mof_rule": "XMI interchange \u2014 JSON serialization is lossless and schema-conformant after round-trip",
+  "pass_fixture": {
+    "role": "ciso-agent",
+    "problem": "ungoverned AI agents",
+    "bau_measure": {
+      "value": 1500000,
+      "unit": "USD"
+    },
+    "lifecycle_mode": "active",
+    "drift_status": "on_track"
+  },
+  "fail_fixture": null,
+  "assertion": "json.dumps \u2192 json.loads produces identical dict; re-validated against schema passes"
+}

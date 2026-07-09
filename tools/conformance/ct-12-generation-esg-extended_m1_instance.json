@@ -1,0 +1,29 @@
+{
+  "id": "CT-12",
+  "category": "generation",
+  "name": "ESG-extended M1 instance",
+  "description": "Verifies an ESG-extended AAEI record \u2014 using the proof_package_ref field to reference an ESG evidence package \u2014 generates as a valid M1 instance.",
+  "mof_rule": "M2 \u2192 M1 \u2014 proof_package_ref supports ESG evidence chain reference",
+  "pass_fixture": {
+    "role": "esg-compliance-agent",
+    "problem": "enterprise procurement eliminating vendors without ESG proof",
+    "bau_measure": {
+      "value": 0,
+      "unit": "ESG proof packages"
+    },
+    "ps_measure": {
+      "value": 1,
+      "unit": "audit-ready ESG proof package"
+    },
+    "delta": {
+      "value": 1,
+      "unit": "proof packages",
+      "direction": "increase"
+    },
+    "evidence_chain_id": "ec_esg_2026_q3",
+    "lifecycle_mode": "active",
+    "proof_package_ref": "https://evidence.valuelogics.ai/esg/ec_esg_2026_q3"
+  },
+  "fail_fixture": null,
+  "assertion": "ESG-extended record is a valid M1 instance"
+}

@@ -1,0 +1,23 @@
+{
+  "id": "CT-02",
+  "category": "structural",
+  "name": "Nullable optional attributes",
+  "description": "Verifies that all optional fields accept null, confirming MOF multiplicity [0..1] for all non-required attributes.",
+  "mof_rule": "M2 metaclass AccountabilityEvidence \u2014 optional attributes multiplicity [0..1]",
+  "pass_fixture": {
+    "role": "cfo-agent",
+    "problem": "manual reconciliation",
+    "bau_measure": null,
+    "ps_measure": null,
+    "delta": null,
+    "motivation_ref": null,
+    "desired_result": null,
+    "evidence_chain_id": null,
+    "hash": null,
+    "lifecycle_mode": null,
+    "proof_package_ref": null,
+    "drift_status": null
+  },
+  "fail_fixture": null,
+  "assertion": "all nullable fields accept null without ValidationError"
+}

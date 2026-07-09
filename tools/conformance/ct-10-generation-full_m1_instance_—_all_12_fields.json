@@ -1,0 +1,33 @@
+{
+  "id": "CT-10",
+  "category": "generation",
+  "name": "Full M1 instance \u2014 all 12 fields",
+  "description": "Verifies a complete AAEI record with all 12 fields populated conforms to the M2 metaclass definition.",
+  "mof_rule": "M2 \u2192 M1 instantiation \u2014 fully populated instance conforms to all attribute constraints",
+  "pass_fixture": {
+    "role": "support-triage-agent",
+    "problem": "manual ticket routing causes 4hr median delay",
+    "bau_measure": {
+      "value": 240,
+      "unit": "minutes"
+    },
+    "ps_measure": {
+      "value": 30,
+      "unit": "minutes"
+    },
+    "motivation_ref": "bmm://goals/reduce-support-cycle-time",
+    "desired_result": "30-minute median routing time",
+    "delta": {
+      "value": 210,
+      "unit": "minutes",
+      "direction": "reduction"
+    },
+    "evidence_chain_id": "ec_8f21a4b3",
+    "hash": "sha256:9a31b7f2c4e8d6a1",
+    "lifecycle_mode": "active",
+    "drift_status": "on_track",
+    "proof_package_ref": "https://evidence.valuelogics.ai/proof/ec_8f21a4b3"
+  },
+  "fail_fixture": null,
+  "assertion": "12-field record is a valid fully-populated M1 instance"
+}

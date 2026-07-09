@@ -1,0 +1,27 @@
+{
+  "id": "CT-14",
+  "category": "interchange",
+  "name": "Null field omission compatibility",
+  "description": "Verifies that records with null fields and records with those fields omitted are semantically equivalent for interchange purposes.",
+  "mof_rule": "XMI interchange \u2014 null and absent optional attributes are interchange-equivalent",
+  "pass_fixture": {
+    "role": "cfo-agent",
+    "problem": "reporting waste"
+  },
+  "pass_fixture_explicit_nulls": {
+    "role": "cfo-agent",
+    "problem": "reporting waste",
+    "bau_measure": null,
+    "ps_measure": null,
+    "delta": null,
+    "motivation_ref": null,
+    "desired_result": null,
+    "evidence_chain_id": null,
+    "hash": null,
+    "lifecycle_mode": null,
+    "proof_package_ref": null,
+    "drift_status": null
+  },
+  "fail_fixture": null,
+  "assertion": "both fixtures validate; semantically equivalent for interchange"
+}

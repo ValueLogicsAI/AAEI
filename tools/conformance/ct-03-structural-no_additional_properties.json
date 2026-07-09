@@ -1,0 +1,17 @@
+{
+  "id": "CT-03",
+  "category": "structural",
+  "name": "No additional properties",
+  "description": "Verifies additionalProperties:false \u2014 no undeclared fields may appear in a conformant record.",
+  "mof_rule": "M2 closed-world assumption \u2014 metaclass has exactly 12 declared attributes",
+  "pass_fixture": {
+    "role": "ciso-agent",
+    "problem": "ungoverned AI agents"
+  },
+  "fail_fixture": {
+    "role": "ciso-agent",
+    "problem": "ungoverned AI agents",
+    "undeclared_field": "not allowed"
+  },
+  "assertion": "pass_fixture validates; fail_fixture raises ValidationError on additionalProperties"
+}

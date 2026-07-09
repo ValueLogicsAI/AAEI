@@ -1,0 +1,26 @@
+{
+  "id": "CT-16",
+  "category": "interchange",
+  "name": "Numeric precision in measure objects",
+  "description": "Verifies bau_measure.value and ps_measure.value accept integer and floating-point numbers \u2014 required for financial and percentage-based ROI measures.",
+  "mof_rule": "M2 typed attribute BaselineMetric.value \u2014 MOF Real type, includes integer and float",
+  "pass_fixture": {
+    "role": "cmo-agent",
+    "problem": "conversion leakage",
+    "bau_measure": {
+      "value": 2.37,
+      "unit": "percent"
+    },
+    "ps_measure": {
+      "value": 4.15,
+      "unit": "percent"
+    },
+    "delta": {
+      "value": 1.78,
+      "unit": "percent",
+      "direction": "increase"
+    }
+  },
+  "fail_fixture": null,
+  "assertion": "float values 2.37, 4.15, 1.78 validate without type error"
+}

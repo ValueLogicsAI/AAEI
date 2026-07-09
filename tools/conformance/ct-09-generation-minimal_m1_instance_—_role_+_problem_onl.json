@@ -1,0 +1,13 @@
+{
+  "id": "CT-09",
+  "category": "generation",
+  "name": "Minimal M1 instance \u2014 role + problem only",
+  "description": "Verifies the minimum valid AAEI record (M1 instance) can be generated from only the two required fields.",
+  "mof_rule": "M2 \u2192 M1 instantiation \u2014 minimum conformant instance requires only role and problem",
+  "pass_fixture": {
+    "role": "ceo",
+    "problem": "cost of delay"
+  },
+  "fail_fixture": null,
+  "assertion": "two-field record is a valid M1 instance of the AccountabilityEvidence metaclass"
+}

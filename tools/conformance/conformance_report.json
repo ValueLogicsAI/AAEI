@@ -1,0 +1,142 @@
+{
+  "standard": "AAEI v1.2 \u2014 AI Accountability Evidence Interchange",
+  "mof_version": "MOF 2.5.1 (formal/16-11-01)",
+  "run_timestamp": "2026-07-09T14:25:55.837339Z",
+  "schema": "schemas/aaei_schema_v1_2.json",
+  "repository": "github.com/ValueLogicsAI/AAEI",
+  "license": "Apache 2.0",
+  "summary": {
+    "total": 18,
+    "passed": 18,
+    "failed": 0,
+    "conformant": true
+  },
+  "results": [
+    {
+      "id": "CT-01",
+      "category": "structural",
+      "name": "Required fields presence",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "CT-02",
+      "category": "structural",
+      "name": "Nullable optional attributes",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "CT-03",
+      "category": "structural",
+      "name": "No additional properties",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "CT-04",
+      "category": "structural",
+      "name": "Measure object structure",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "CT-05",
+      "category": "semantic",
+      "name": "lifecycle_mode enumeration constraint",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "CT-06",
+      "category": "semantic",
+      "name": "drift_status enumeration constraint",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "CT-07",
+      "category": "semantic",
+      "name": "hash format constraint",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "CT-08",
+      "category": "semantic",
+      "name": "BMM bridge field independence",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "CT-09",
+      "category": "generation",
+      "name": "Minimal M1 instance \u2014 role + problem only",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "CT-10",
+      "category": "generation",
+      "name": "Full M1 instance \u2014 all 12 fields",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "CT-11",
+      "category": "generation",
+      "name": "AI agent M1 instance",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "CT-12",
+      "category": "generation",
+      "name": "ESG-extended M1 instance",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "CT-13",
+      "category": "interchange",
+      "name": "JSON serialization round-trip",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "CT-14",
+      "category": "interchange",
+      "name": "Null field omission compatibility",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "CT-15",
+      "category": "interchange",
+      "name": "String field Unicode encoding",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "CT-16",
+      "category": "interchange",
+      "name": "Numeric precision in measure objects",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "CT-17",
+      "category": "evidence_integrity",
+      "name": "hash requires evidence_chain_id",
+      "status": "PASS",
+      "error": null
+    },
+    {
+      "id": "CT-18",
+      "category": "evidence_integrity",
+      "name": "drift_status closed enumeration",
+      "status": "PASS",
+      "error": null
+    }
+  ]
+}

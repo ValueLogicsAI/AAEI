@@ -1,0 +1,13 @@
+{
+  "id": "CT-15",
+  "category": "interchange",
+  "name": "String field encoding",
+  "description": "Verifies role and problem accept Unicode strings including non-ASCII characters \u2014 required for international interchange.",
+  "mof_rule": "M2 String type \u2014 unrestricted Unicode content per MOF 2.5.1 String primitive",
+  "pass_fixture": {
+    "role": "agent-de-qualification-des-ventes",
+    "problem": "40% des prospects ne correspondent pas aux crit\u00e8res de qualification"
+  },
+  "fail_fixture": null,
+  "assertion": "Unicode role and problem strings validate without error"
+}

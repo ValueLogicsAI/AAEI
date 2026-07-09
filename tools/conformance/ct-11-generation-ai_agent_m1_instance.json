@@ -1,0 +1,28 @@
+{
+  "id": "CT-11",
+  "category": "generation",
+  "name": "AI agent M1 instance",
+  "description": "Verifies a standard AI agent accountability record generates as a valid M1 instance \u2014 the primary AAEI use case.",
+  "mof_rule": "M2 \u2192 M1 \u2014 AI agent accountability record conforms to AccountabilityEvidence metaclass",
+  "pass_fixture": {
+    "role": "sales-qualification-agent",
+    "problem": "unqualified leads waste 40% of rep capacity",
+    "bau_measure": {
+      "value": 40,
+      "unit": "percent"
+    },
+    "ps_measure": {
+      "value": 10,
+      "unit": "percent"
+    },
+    "delta": {
+      "value": 30,
+      "unit": "percent",
+      "direction": "reduction"
+    },
+    "lifecycle_mode": "active",
+    "drift_status": "on_track"
+  },
+  "fail_fixture": null,
+  "assertion": "AI agent record is a valid M1 instance"
+}

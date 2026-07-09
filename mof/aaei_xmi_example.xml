@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  AAEI v1.2 — XMI Serialization Example
+  MOF-conformant XMI 2.5 representation of an AAEI M1 accountability contract instance
+  
+  Standard:   AI Accountability Evidence Interchange v1.2
+  Conforms to: MOF 2.5.1 (formal/16-11-01)
+  License:    Apache 2.0
+  Repository: github.com/ValueLogicsAI/AAEI
+-->
+<xmi:XMI 
+  xmlns:xmi="http://www.omg.org/spec/XMI/20131001"
+  xmlns:aaei="http://valuelogics.ai/aaei/1.2"
+  xmi:version="2.5">
+
+  <aaei:AccountabilityEvidence
+    xmi:id="ae_support_triage_2026"
+    xmi:type="aaei:AccountabilityEvidence"
+    role="support-triage-agent"
+    problem="Manual ticket routing causes 4-hour median delay before first response"
+    evidence_chain_id="ec_8f21a4b3c9d2"
+    hash="sha256:9a31b7f2c4e8d6a1"
+    lifecycle_mode="active"
+    drift_status="on_track"
+    motivation_ref="bmm://goals/reduce-support-cycle-time"
+    desired_result="30-minute median first-response time"
+    proof_package_ref="https://evidence.valuelogics.ai/proof/ec_8f21a4b3c9d2">
+
+    <bau_measure
+      xmi:type="aaei:BaselineMetric"
+      value="240"
+      unit="minutes"/>
+
+    <ps_measure
+      xmi:type="aaei:GoalMeasure"
+      value="30"
+      unit="minutes"/>
+
+    <delta
+      xmi:type="aaei:OutcomeDelta"
+      value="210"
+      unit="minutes"
+      direction="reduction"/>
+
+  </aaei:AccountabilityEvidence>
+
+</xmi:XMI>

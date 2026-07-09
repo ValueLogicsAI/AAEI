@@ -1,0 +1,15 @@
+{
+  "_comment": "AAEI v1.2 — Example 03: ESG-extended accountability record",
+  "role": "esg-compliance-agent",
+  "problem": "Enterprise procurement eliminating vendors without auditable ESG proof packages",
+  "bau_measure": {"value": 0, "unit": "audit-ready ESG proof packages"},
+  "ps_measure": {"value": 1, "unit": "audit-ready ESG proof packages per quarter"},
+  "motivation_ref": "bmm://goals/achieve-enterprise-procurement-compliance",
+  "desired_result": "Pass enterprise ESG procurement screening — Q4 2026",
+  "delta": {"value": 1, "unit": "proof packages", "direction": "increase"},
+  "evidence_chain_id": "ec_esg_procurement_2026_q3",
+  "hash": "sha256:b3c7e1a9f4d2",
+  "lifecycle_mode": "active",
+  "drift_status": "on_track",
+  "proof_package_ref": "https://evidence.valuelogics.ai/esg/ec_esg_procurement_2026_q3"
+}

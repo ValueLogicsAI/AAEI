@@ -1,0 +1,19 @@
+{
+  "id": "CT-17",
+  "category": "evidence_integrity",
+  "name": "hash requires evidence_chain_id",
+  "description": "Verifies the structural constraint: when hash is present and non-null, evidence_chain_id must also be present and non-null. A hash without a chain ID is not verifiable.",
+  "mof_rule": "M2 constraint: hash[present] \u2192 evidence_chain_id[required, minLength:1]",
+  "pass_fixture": {
+    "role": "cio-agent",
+    "problem": "cloud waste",
+    "evidence_chain_id": "ec_ldr_cloud_2026",
+    "hash": "sha256:7c4a2b1e9f"
+  },
+  "fail_fixture": {
+    "role": "cio-agent",
+    "problem": "cloud waste",
+    "hash": "sha256:7c4a2b1e9f"
+  },
+  "assertion": "pass_fixture validates; fail_fixture raises ValidationError \u2014 hash present without evidence_chain_id"
+}

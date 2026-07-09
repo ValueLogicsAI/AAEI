@@ -1,0 +1,15 @@
+{
+  "id": "CT-08",
+  "category": "semantic",
+  "name": "BMM bridge field independence",
+  "description": "Verifies motivation_ref and desired_result are nullable string references \u2014 they accept any string identifier without requiring a live BMM model.",
+  "mof_rule": "M2 BMM bridge attributes \u2014 BMM_MotivationRef[0..1], BMM_DesiredResult[0..1]",
+  "pass_fixture": {
+    "role": "cfo-agent",
+    "problem": "AI spend waste",
+    "motivation_ref": "bmm://goals/reduce-ai-spend",
+    "desired_result": "10% reduction in unproven AI investment"
+  },
+  "fail_fixture": null,
+  "assertion": "motivation_ref and desired_result accept any string value without external resolution"
+}

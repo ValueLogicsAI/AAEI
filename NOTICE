@@ -1,0 +1,26 @@
+AAEI — AI Accountability Evidence Interchange
+Copyright 2026 ProveIT ROI LLC d/b/a ValueLogics.ai LLC
+
+Prior Art Declaration
+---------------------
+The business value measurement methodology underlying AAEI traces to
+US Patent Application 2002/0042751 A1 (published April 11, 2002, now
+abandoned). Referenced here solely as prior art — not active or enforceable.
+Cited by 57 Fortune 500 companies.
+
+Prior art timestamp: June 26, 2026
+Repository: github.com/ValueLogicsAI/AAEI
+
+Standards Submission
+--------------------
+AAEI v1.2 proposed to OMG as enhancement to BMM (formal/08-09-02).
+Target: Q3 2026 Technical Meeting, Orlando FL, September 14-18, 2026.
+LOI deadline: August 17, 2026.
+Submitted to: Business Architecture TF · AI Task Force · MDA Working Group
+
+Trade Secret Notice
+-------------------
+AAEI schema and conformance tests: Apache 2.0 (this repo).
+Value contract execution, ROI calculation methodology, proof generation,
+and compiler internals: proprietary trade secrets of ValueLogics.ai LLC.
+NOT included in this repository.

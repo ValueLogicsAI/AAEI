@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ValueLogicsAI/AAEI/schemas/aaei_schema_v1_2.json",
+  "title": "AAEI v1.2 — AI Accountability Evidence Interchange",
+  "description": "MOF-conformant M2 metamodel schema. Enhancement to OMG Business Motivation Model (BMM). Apache 2.0. ValueLogics.ai LLC.",
+  "type": "object",
+  "required": ["role", "problem"],
+  "additionalProperties": false,
+  "properties": {
+    "role":               { "type": "string", "minLength": 1, "description": "Who was this system meant to serve?" },
+    "problem":            { "type": "string", "minLength": 1, "description": "What problem, constraint, or risk existed?" },
+    "bau_measure":        { "type": ["object","null"], "description": "Baseline before intervention", "properties": { "value": {"type":"number"}, "unit": {"type":"string"} }, "required": ["value","unit"] },
+    "ps_measure":         { "type": ["object","null"], "description": "Goal Measure — what outcome was promised?", "properties": { "value": {"type":"number"}, "unit": {"type":"string"} }, "required": ["value","unit"] },
+    "motivation_ref":     { "type": ["string","null"], "description": "BMM bridge — references BMM End or Means element" },
+    "desired_result":     { "type": ["string","null"], "description": "BMM bridge — references BMM DesiredResult" },
+    "delta":              { "type": ["object","null"], "description": "What changed between baseline and actual", "properties": { "value": {"type":"number"}, "unit": {"type":"string"}, "direction": {"type":"string","enum":["reduction","increase","neutral"]} }, "required": ["value","unit","direction"] },
+    "evidence_chain_id":  { "type": ["string","null"], "description": "Links record to source events" },
+    "hash":               { "type": ["string","null"], "pattern": "^sha256:[a-f0-9]{6,}$", "description": "Integrity check — format: sha256:{hex}" },
+    "lifecycle_mode":     { "type": ["string","null"], "enum": ["active","completed","suspended","archived",null], "description": "Accountability lifecycle" },
+    "proof_package_ref":  { "type": ["string","null"], "description": "URI to externalized proof package" },
+    "drift_status":       { "type": ["string","null"], "enum": ["on_track","at_risk","drifting",null], "description": "Value delivery drift status" }
+  },
+  "if": { "required": ["hash"], "properties": { "hash": { "type": "string" } } },
+  "then": { "required": ["evidence_chain_id"], "properties": { "evidence_chain_id": { "type": "string", "minLength": 1 } } }
+}

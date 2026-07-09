@@ -1,0 +1,20 @@
+{
+  "id": "CT-07",
+  "category": "semantic",
+  "name": "hash format constraint",
+  "description": "Verifies hash must match pattern sha256:{hex} when present.",
+  "mof_rule": "M2 typed attribute IntegrityHash \u2014 pattern constraint sha256:[a-f0-9]{6,}",
+  "pass_fixture": {
+    "role": "cco-agent",
+    "problem": "audit burden",
+    "evidence_chain_id": "ec_001",
+    "hash": "sha256:9a31b7f2c4"
+  },
+  "fail_fixture": {
+    "role": "cco-agent",
+    "problem": "audit burden",
+    "evidence_chain_id": "ec_001",
+    "hash": "md5:notvalid"
+  },
+  "assertion": "pass_fixture validates; fail_fixture raises ValidationError on hash pattern"
+}

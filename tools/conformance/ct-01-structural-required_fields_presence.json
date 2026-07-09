@@ -1,0 +1,15 @@
+{
+  "id": "CT-01",
+  "category": "structural",
+  "name": "Required fields presence",
+  "description": "Verifies that role and problem are required metaclass attributes and that a record missing either fails validation.",
+  "mof_rule": "M2 metaclass AccountabilityEvidence \u2014 mandatory attributes: role[1], problem[1]",
+  "pass_fixture": {
+    "role": "support-agent",
+    "problem": "4hr ticket delay"
+  },
+  "fail_fixture": {
+    "problem": "missing role field"
+  },
+  "assertion": "pass_fixture validates; fail_fixture raises ValidationError on role"
+}

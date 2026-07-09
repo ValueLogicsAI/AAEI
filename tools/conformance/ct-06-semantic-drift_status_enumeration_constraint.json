@@ -1,0 +1,18 @@
+{
+  "id": "CT-06",
+  "category": "semantic",
+  "name": "drift_status enumeration constraint",
+  "description": "Verifies drift_status accepts only: on_track | at_risk | drifting | null.",
+  "mof_rule": "M2 enumeration DriftStatus \u2014 three valid literals plus null",
+  "pass_fixture": {
+    "role": "evo-agent",
+    "problem": "portfolio waste",
+    "drift_status": "on_track"
+  },
+  "fail_fixture": {
+    "role": "evo-agent",
+    "problem": "portfolio waste",
+    "drift_status": "drifted"
+  },
+  "assertion": "pass_fixture validates; fail_fixture raises ValidationError on drift_status enum"
+}

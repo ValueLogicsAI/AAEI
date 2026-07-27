@@ -1,269 +1,257 @@
 # AAEI — AI Accountability Evidence Interchange
+**Proposed OMG Standard · Apache 2.0 · v1.2.0**
 
-**The missing evidence layer for AI agents and AI-enabled systems.**
-
-Every AI agent makes an implicit promise: that running it produces value for someone.  
-Almost none record that promise in a form anyone can check later.  
-**AAEI gives that promise a shape.**
+> Author once. Generate anywhere. Prove it paid off.
 
 ---
 
-| | |
-|---|---|
-| **Version** | 1.2 |
-| **Status** | Public draft · Proposed OMG standard |
-| **License** | Apache License 2.0 |
-| **Publisher** | ValueLogics.ai LLC |
-| **Repository** | github.com/ValueLogicsAI/AAEI |
-| **Prior art** | June 26, 2026 (public timestamp) |
-| **MOF conformance** | ✓ 18/18 tests passing |
-| **OMG target** | Q3 2026 · Orlando, FL · September 14–18, 2026 |
+## What is AAEI?
+
+AAEI is an open standard for portable, verifiable AI accountability evidence.
+
+It defines the minimum field set required to prove that an AI system,
+generated platform, or automated workflow delivered what it promised —
+across any vendor, platform, architecture, or regeneration cycle.
+
+**OMG submission target: August 17, 2026**
+**Prior art clock started: June 26, 2026**
+**License: Apache 2.0**
+**Maintained by: ValueLogics.ai LLC**
 
 ---
 
-## The Problem
+## The Problem AAEI Solves
 
-The OMG Business Motivation Model (BMM) defines the structure of business intent.  
-It answers: *why does an organization act?*
+Every AI platform today can generate software. None of them can prove
+the generated software preserved the business logic it was supposed to implement.
 
-**BMM does not record whether that intent produced a measurable outcome.**
+When you regenerate a platform — new framework, new cloud provider,
+new architecture — you get different files. The question no existing
+standard answers is:
 
-That gap has been open for eleven years (BMM v1.3, 2015).
+> Did the business logic survive? Are the rules, metrics, workflows,
+> and proof obligations exactly what they were before?
 
-In the era of AI agents, this gap is critical. Organizations are deploying AI systems, automated workflows, and AI-enabled applications — with no baseline, no goal measure, no actual evidence, and no board-ready proof that any of it worked.
-
-Auditors cannot verify AI claims. Boards cannot allocate capital on evidence. Procurement organizations cannot screen vendors. Regulators cannot audit outcomes.
-
-**Not because the results aren't real. Because there is no standard to record them.**
+File hashes prove files did not change.
+**AAEI proves business logic did not change.**
 
 ---
 
-## The Solution
+## Portable Logic — The Core Concept
 
-AAEI is the evidence abstraction that closes the BMM gap.
+Traditional software locks business logic inside implementation files.
+Change the framework, migrate the database, regenerate the platform —
+and there is no standard way to prove the logic survived intact.
+
+AAEI introduces **portable logic** — business intent, rules, metrics,
+and proof obligations expressed as a standard evidence contract that
+travels with the system regardless of how it is implemented.
 
 ```
-BMM   →  Why the organization acts   (intent)
-AAEI  →  Whether the action delivered  (evidence)
+Without AAEI:
+  Business logic = trapped in code
+  Regeneration   = hope nothing broke
+  Audit trail    = none
+
+With AAEI:
+  Business logic = portable contract + VLH fingerprint
+  Regeneration   = cryptographically verified continuity
+  Audit trail    = immutable AAEI evidence record
 ```
 
-Twelve public fields. One question answered:
-
-> **What was this AI system supposed to do, and did it?**
-
-AAEI is deliberately minimal — not a runtime, not a scoring method, not a vendor's internal contract language. It exists so that any organization, auditor, standards body, or AI agent runtime can state and later verify one accountability claim about any AI system.
-
----
-
-## Why This Matters Now
-
-**For enterprises:** AI spend without accountability is AI spend without governance. AAEI gives finance, security, compliance, and board stakeholders a standard evidence format to request and verify.
-
-**For AI vendors:** The organizations that prove value will win the next renewal. The organizations that can only claim it will not.
-
-**For agent-to-agent commerce:** As autonomous agents begin transacting with each other, trust requires proof. AAEI is the evidence interchange layer that makes agent-to-agent accountability verifiable — not by assertion, but by standard.
-
-**For standards bodies:** BMM defined motivation. Eleven years later, the evidence layer it requires is here.
-
-
-## The A2A Vision — Agent-to-Agent Commerce Built on Evidence
-
-The next wave of AI deployment is not agents serving humans. It is agents transacting with agents — autonomous systems that identify gaps, match capabilities, negotiate outcomes, and settle transactions without human intermediation at every step.
-
-No current standard governs what an agent must prove before another agent trusts it. No current standard defines how an agent-to-agent transaction settles on the basis of verified value rather than claimed capability. Agents today transact on assertion. The standard they need is an evidence interchange format — a common record that travels with every agent, stating what it was deployed to deliver and whether it did.
-
-**AAEI is that record.**
-
-When one agent's value proposition addresses another agent's verified gap — and both carry AAEI-conformant evidence records — the transaction has a basis for settlement that is auditable, portable, and standard. The gap between what was promised and what was delivered is no longer a matter of trust. It is a matter of record.
-
-This is why AAEI is proposed to the OMG AI Task Force alongside the Business Architecture Task Force. OMG standardized model-driven systems. The agent economy needs evidence-driven commerce. AAEI is the evidence interchange standard that makes it possible — built on the same MOF metamodel foundation OMG has used since 2001, extending the BMM intent model with the evidence layer it has needed since 2015, and following the CWM interchange format pattern OMG adopted in 2003.
-
-The standard is minimal by design. AAEI does not define how agents are built, how they communicate, how they govern themselves, or how transactions are settled. It defines only what an accountability evidence record must contain. Every other concern remains open for OMG member organizations to implement — and to differentiate on.
+The Value Logic Hash (VLH) — introduced in v1.2 — is the cryptographic
+fingerprint of the portable logic contract. If VLH matches before and
+after regeneration, the business logic was preserved exactly.
+If it does not match, something changed — and the system can say
+precisely what.
 
 ---
 
-## Quick Start
+## Field Reference
 
-```bash
-# Clone
-git clone https://github.com/ValueLogicsAI/AAEI
-cd AAEI
+### v1.0 — Core Fields (8)
 
-# Validate an example record
-python3 tools/validate_aaei.py --record examples/example_02_ai_agent.json
+| Field | Type | Description |
+|-------|------|-------------|
+| `role` | string | Who the value contract serves |
+| `problem_statement` | string | Business problem being addressed |
+| `bau_measure` | decimal | Baseline — pre-solution measurement |
+| `ps_measure` | decimal | Post-solution measurement |
+| `delta` | decimal | Measured or projected improvement |
+| `fib_id` | string | Unique contract identifier |
+| `sha256_hash` | string | Immutable proof anchor |
+| `lifecycle_mode` | enum | `saas` / `full` / `agency` |
 
-# Run the full MOF conformance suite
-python3 tools/conformance/run_conformance_suite.py
+### v1.1 — ESG Fields (3 new)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `energy_proxy_pct` | decimal | Runtime compute energy reduction (proxy) |
+| `token_reduction_pct` | decimal | AI token exposure reduction |
+| `network_reduction_pct` | decimal | Network transfer reduction |
+
+### v1.2 — Portable Logic Fields (3 new)
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `vlh` | string | Value Logic Hash — SHA-256 fingerprint of the canonical logic contract (rules + metrics + workflows + proof requirements). Proves logic continuity across regeneration. |
+| `ldr_ratio` | decimal | Logic Density Ratio — authored KV lines ÷ source LOC analyzed. Measures compression efficiency. Lower = better. Industry baseline = 1.0. |
+| `source_snapshot_hash` | string | SHA-256 of original source files before ValueLogics processing. Proves provenance of what was analyzed. |
+
+**Total: 14 fields across 3 versions.**
+
+---
+
+## The LDR Standard
+
+LDR (Logic Density Ratio) is a portable, auditable measure of
+how efficiently business logic has been compressed into a
+canonical representation.
+
+```
+LDR = authored KV lines ÷ source LOC analyzed
+
+Examples:
+  Event Concierge HQ (Lovable → ValueLogics):
+    LDR = 1,211 ÷ 8,071 = 0.15  (85% reduction)
+
+  IBM z/OS COBOL SAM1/SAM2:
+    LDR = 120 ÷ 922 = 0.13  (87% reduction)
+
+  Industry baseline (no compression):
+    LDR = 1.0
 ```
 
-Expected: `18/18 tests passing · STATUS: ✓ AAEI v1.2 MOF CONFORMANCE VERIFIED`
+A validated LDR report MUST include a VLH proving that the
+extracted business intent, rules, metrics, workflows, and
+success conditions are preserved across regeneration.
+
+**The files may change. The logic contract must not.**
 
 ---
 
-## The 12 Public Fields
+## The Value Logic Hash (VLH)
 
-| Field | Answers |
-|---|---|
-| `role` | Who was this system meant to serve? |
-| `problem` | What problem, constraint, or risk existed? |
-| `bau_measure` | What was the baseline before intervention? |
-| `ps_measure` *(Goal Measure)* | What outcome was promised? |
-| `motivation_ref` | Which BMM motivation element drove this? *(BMM bridge)* |
-| `desired_result` | What end state was the motivation targeting? *(BMM bridge)* |
-| `delta` | What changed between baseline and actual? |
-| `evidence_chain_id` | How is this record linked to its source events? |
-| `hash` | How can the record be integrity-checked? |
-| `lifecycle_mode` | What accountability lifecycle applies? |
-| `proof_package_ref` | Where is the externalized proof package? |
-| `drift_status` | Has value delivery drifted from goal? |
+VLH is the cryptographic fingerprint of the business logic
+contract — not the files, but the meaning.
 
-> `ps_measure` is the schema field name retained for backward compatibility.  
-> It is always displayed as **Goal Measure** in ValueLogics tooling and documentation.
+```
+VLH = sha256(
+  problem_statement +
+  role +
+  bau_measure +
+  goal_measure +
+  business_rules +
+  workflow_definitions +
+  api_contracts +
+  functional_equivalence_tests +
+  proof_requirements +
+  evidence_requirements
+)
+```
 
-Two fields — `motivation_ref` and `desired_result` — provide direct structural bridges to existing BMM models. AAEI does not modify BMM. It extends it.
+### Hash Chain
+
+```
+source_snapshot_hash     ← what was analyzed (files)
+        ↓
+value_logic_hash (VLH)  ← what was extracted (meaning)
+        ↓
+generated_surface_hash   ← what was emitted (artifacts)
+        ↓
+functional_equiv_hash    ← what was verified (behavior)
+        ↓
+aaei_proof_hash          ← what was proven (ROI + ESG)
+```
+
+### Why it matters
+
+```
+Normal hash:   "These files did not change."
+VLH:           "This business logic, behavior, and value
+                promise did not change — even if the
+                generated code is completely different."
+```
+
+### The VMware Parallel
+
+VMware virtualized physical compute.
+VMware collapsed many physical servers into one logical host.
+VMware needed VM identity to prove a migrated VM was the same VM.
+
+ValueLogics virtualizes business logic.
+ValueLogics collapses many lines of brittle application code
+into one semantic logic contract.
+ValueLogics needs the VLH to prove a regenerated platform
+carries the same business logic as the original.
 
 ---
 
-## Example Record
+## Example AAEI Record (v1.2)
 
 ```json
 {
-  "role": "support-triage-agent",
-  "problem": "Manual ticket routing causes 4-hour median delay before first response",
-  "bau_measure": { "value": 240, "unit": "minutes" },
-  "ps_measure":  { "value": 30,  "unit": "minutes" },
-  "motivation_ref": "bmm://goals/reduce-support-cycle-time",
-  "desired_result": "30-minute median first-response time",
-  "delta": { "value": 210, "unit": "minutes", "direction": "reduction" },
-  "evidence_chain_id": "ec_8f21a4b3c9d2",
-  "hash": "sha256:9a31b7f2c4e8d6a1",
-  "lifecycle_mode": "active",
-  "drift_status": "on_track",
-  "proof_package_ref": "https://evidence.valuelogics.ai/proof/ec_8f21a4b3c9d2"
+  "role": "Operations / IT Leadership",
+  "problem_statement": "Manual process overhead and unmeasured AI operating cost",
+  "bau_measure": 8071,
+  "ps_measure": 1211,
+  "delta": 85.0,
+  "fib_id": "fib_vl-esg-f47cfe2677fb",
+  "sha256_hash": "c43e712c0d8b9e6240c8a1f2b3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2",
+  "lifecycle_mode": "saas",
+  "energy_proxy_pct": 17.1,
+  "token_reduction_pct": 85.0,
+  "network_reduction_pct": 98.1,
+  "vlh": "a3f9e2c1d8b47f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2",
+  "ldr_ratio": 0.15,
+  "source_snapshot_hash": "f47cfe2677fb3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b"
 }
 ```
 
 ---
 
-## Position in the OMG Stack
+## Proof Points
 
-AAEI is proposed as a MOF-conformant M2 metamodel — peer to UML, BMM, CWM, and BPMN.
-
-```
-M3  MOF 2.5.1  (formal/16-11-01)       The metamodeling language
-M2  BMM v1.3   (formal/08-09-02)       Why the organization acts  ← AAEI extends this
-M2  AAEI v1.2  (proposed)              Whether the action delivered
-M1  AAEI accountability contracts      Specific evidence commitments
-M0  Runtime evidence records           Actual measured outcomes
-```
-
-AAEI follows the CWM precedent (formal/03-03-02, 2003):  
-standardize the interchange schema — leave the implementation to the vendor.
-
-**MDA starts with a platform-independent model.**  
-**AAEI starts one level higher — with a value-independent contract that defines what the system must prove.**
+| Metric | Value | Source |
+|--------|-------|--------|
+| LDR — Event Concierge HQ | 0.15 | open_lovable.zip · wc -l verified |
+| LDR — IBM COBOL SAM1/SAM2 | 0.13 | github.com/IBM/zopeneditor-sample · wc -l verified |
+| Token reduction | 85.0% | Measured code surface proxy |
+| Network reduction | 98.1% | Direct benchmark — 166,500 → 3,200 bytes |
+| Runtime latency reduction | 17.1% | Direct benchmark — 210ms → 174ms |
+| Package footprint reduction | 99.7% | Direct benchmark — 338 MB → 1 MB |
+| Developer hours saved | 272 hrs ($40,800) | Estimated @ $150/hr |
+| Prior art clock | June 26, 2026 | AAEI v1.0 published |
 
 ---
 
-## What AAEI Does Not Prescribe
+## Roadmap
 
-By design, AAEI is silent on:
-
-- How value is calculated
-- How evidence is collected
-- How runtime behavior is governed
-- How drift is detected
-- How proof packages are generated
-- How security gates are implemented
-
-These are implementation concerns — left open so any organization can build a conformant system its own way. The standard defines the receipt, not the engine.
-
----
-
-## Repository Structure
-
-```
-AAEI/
-├── README.md
-├── LICENSE                                Apache 2.0
-├── NOTICE                                 Prior art declaration
-│
-├── schemas/
-│   └── aaei_schema_v1_2.json             JSON Schema (Draft 2020-12)
-│
-├── examples/
-│   ├── example_01_standard_application.json
-│   ├── example_02_ai_agent.json
-│   └── example_03_esg_extended.json
-│
-├── mappings/
-│   ├── aaei_to_bmm_mapping.md            AAEI ↔ BMM field mapping
-│   └── aaei_cwm_mda_positioning.md       Position in OMG stack
-│
-├── mof/
-│   ├── aaei_mof_metamodel.md             MOF M2 metaclass specification
-│   └── aaei_xmi_example.xml              XMI serialization example
-│
-├── tools/
-│   ├── validate_aaei.py                  CLI record validator
-│   └── conformance/
-│       ├── run_conformance_suite.py      18/18 conformance test runner
-│       ├── ct-01 through ct-18 .json    Individual test fixtures
-│       └── conformance_report.json      Machine-readable pass report
-│
-└── docs/
-    └── (OMG submission documents)
-```
-
----
-
-## MOF Conformance
-
-AAEI v1.2 has **18/18 MOF conformance tests passing** across five categories:
-
-| Category | Tests | Status |
-|---|---|---|
-| Structural | CT-01 to CT-04 | ✓ 4/4 |
-| Semantic | CT-05 to CT-08 | ✓ 4/4 |
-| Generation | CT-09 to CT-12 | ✓ 4/4 |
-| Interchange | CT-13 to CT-16 | ✓ 4/4 |
-| Evidence Integrity | CT-17 to CT-18 | ✓ 2/2 |
-
-Run them yourself: `python3 tools/conformance/run_conformance_suite.py`
+| Version | Fields | Status |
+|---------|--------|--------|
+| v1.0 | 8 core fields | Published June 26, 2026 |
+| v1.1 | + 3 ESG fields | Published June 29, 2026 |
+| v1.2 | + 3 portable logic fields (VLH, LDR, snapshot) | This release |
+| v1.3 | Functional equivalence hash · DriftWatch integration | Planned |
 
 ---
 
 ## OMG Submission
 
-AAEI v1.2 is proposed to three OMG working groups for the Q3 2026 Technical Meeting:
+AAEI is being submitted to the Object Management Group (OMG)
+as a proposed standard for AI accountability evidence interchange.
 
-1. **Business Architecture Task Force** — as the evidence layer BMM has needed since 2015
-2. **AI Task Force** — as the accountability standard for AI agent governance and A2A commerce
-3. **MDA Working Group** — as the value evidence layer above the platform-independent model
-
-**LOI deadline:** August 17, 2026  
-**Target meeting:** Q3 2026 · Orlando, FL · September 14–18, 2026  
-**Contact:** as@valuelogics.ai  
-**Full submission paper:** `docs/AAEI_OMG_Submission_v1.2.docx`
+**Submission target: August 17, 2026**
+**Primary contact: Dr. Morley Stone, IHMC (mstone@ihmc.us)**
+**Submitter: Anthony Sarno, ValueLogics.ai LLC (as@valuelogics.ai)**
 
 ---
 
-## Intellectual Property
+## Contact
 
-AAEI v1.2 is Apache License 2.0. No patents are asserted or pending.
+Anthony Sarno, Founder & CEO
+ValueLogics.ai LLC · Lake Worth Beach, FL
+as@valuelogics.ai · +1(728)-230-5573
+valuelogics.ai
 
-The evidence interchange schema is fully public — clone it, implement it, build on it.
-
-The value contract execution layer, ROI calculation methodology, proof generation system, and compiler are proprietary trade secrets of ValueLogics.ai LLC and are not part of this repository. This mirrors the CWM precedent exactly: OMG adopted the warehouse metadata interchange schema in 2003 without requiring IBM, Oracle, or Unisys to disclose their warehouse engines.
-
----
-
-## Contributing and Adoption
-
-Organizations interested in implementing AAEI, co-submitting to OMG, or joining the standards discussion are welcome to open an issue or contact as@valuelogics.ai.
-
-If you are building AI agents, AI-enabled applications, or agentic infrastructure — and you want your systems to carry verifiable accountability evidence — AAEI is designed for you to implement today.
-
----
-
-*Copyright 2026 ProveIT ROI LLC d/b/a ValueLogics.ai LLC · Apache License 2.0*
+*"Less to author. More proof."*

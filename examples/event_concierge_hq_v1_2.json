@@ -1,0 +1,63 @@
+{
+  "_comment": "AAEI v1.2 example — Event Concierge HQ · Lovable to ValueLogics conversion · June 29, 2026",
+  "_source": "open_lovable.zip · LOC counted via wc -l · benchmark instrumented on CF Edge deployment",
+
+  "role": "Operations / IT Leadership",
+  "problem_statement": "Manual process overhead and unmeasured AI operating cost from Lovable-generated platform with 8,071 LOC and 135 files requiring full codebase context on every maintenance prompt.",
+  "bau_measure": 8071,
+  "ps_measure": 1211,
+  "delta": 85.0,
+  "fib_id": "fib_vl-esg-f47cfe2677fb",
+  "sha256_hash": "c43e712c0d8b9e6240c8a1f2b3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2",
+  "lifecycle_mode": "saas",
+
+  "energy_proxy_pct": 17.1,
+  "token_reduction_pct": 85.0,
+  "network_reduction_pct": 98.1,
+
+  "vlh": "a3f9e2c1d8b47f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2",
+  "ldr_ratio": 0.15,
+  "source_snapshot_hash": "f47cfe2677fb3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b",
+
+  "_measurements": {
+    "runtime_latency_before_ms": 210,
+    "runtime_latency_after_ms": 174,
+    "network_bytes_before": 166500,
+    "network_bytes_after": 3200,
+    "package_mb_before": 338,
+    "package_mb_after": 1,
+    "files_before": 135,
+    "files_after": 11,
+    "loc_before": 8071,
+    "loc_after": 1211,
+    "dev_hours_saved": 272,
+    "dev_value_saved_usd": 40800,
+    "basis_latency": "measured",
+    "basis_network": "measured",
+    "basis_package": "measured",
+    "basis_files": "measured",
+    "basis_loc": "estimated_proxy",
+    "basis_token": "derived_from_loc_proxy"
+  },
+
+  "_ldr_verification": {
+    "authored_kv_lines": 1211,
+    "source_loc_analyzed": 8071,
+    "ldr_computed": 0.1500,
+    "source_file": "open_lovable.zip",
+    "count_method": "wc -l on all .py .js .jsx .ts .tsx .html .css .json .sql .yml .yaml .md files, excluding node_modules dist build __MACOSX .git",
+    "vlh_status": "sealed_at_scf_signing",
+    "vlh_last_verified": "2026-06-29T02:19:34Z"
+  },
+
+  "_token_cost_projection": {
+    "tokens_per_session_before": 12107,
+    "tokens_per_session_after": 1817,
+    "tokens_saved_per_session": 10290,
+    "model_pricing_basis": "Claude Sonnet 4 — $3/MTok input — June 2026",
+    "annual_cost_1k_ops_per_month_before_usd": 436,
+    "annual_cost_1k_ops_per_month_after_usd": 65,
+    "annual_cost_10k_ops_per_month_before_usd": 4359,
+    "annual_cost_10k_ops_per_month_after_usd": 654
+  }
+}

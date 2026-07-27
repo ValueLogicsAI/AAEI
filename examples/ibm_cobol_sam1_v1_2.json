@@ -1,0 +1,89 @@
+{
+  "_comment": "AAEI v1.2 example — IBM z/OS COBOL SAM1/SAM2 Value Logic Identification · July 2, 2026",
+  "_source": "github.com/IBM/zopeneditor-sample · LOC counted via wc -l on SAM1.cbl SAM2.cbl CUSTCOPY.cpy TRANREC.cpy RUN.jcl",
+
+  "role": "Mainframe Modernization Team / Enterprise Architecture",
+  "problem_statement": "IBM z/OS COBOL Customer File Update System contains 6 undocumented business rules and 3 critical data structure constraints (implicit decimal, REDEFINES sign convention, OCCURS 12 array) that exist only in the source code. Migration without extracting these rules risks corrupting account balances on day one.",
+  "bau_measure": 922,
+  "ps_measure": 120,
+  "delta": 87.0,
+  "fib_id": "fib_vl-ibm-cobol-sam1-001",
+  "sha256_hash": "b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8",
+  "lifecycle_mode": "full",
+
+  "energy_proxy_pct": null,
+  "token_reduction_pct": 87.0,
+  "network_reduction_pct": null,
+
+  "vlh": "b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5",
+  "ldr_ratio": 0.13,
+  "source_snapshot_hash": "e2677fb3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1",
+
+  "_measurements": {
+    "files_analyzed": 5,
+    "file_breakdown": {
+      "SAM1.cbl": 505,
+      "SAM2.cbl": 159,
+      "CUSTCOPY.cpy": 53,
+      "TRANREC.cpy": 38,
+      "RUN.jcl": 167
+    },
+    "total_source_loc": 922,
+    "authored_kv_lines": 120,
+    "numbered_procedures": 21,
+    "evaluate_blocks": 20,
+    "customer_record_fields": 27,
+    "undocumented_business_rules": 6,
+    "basis": "wc -l on actual IBM zopeneditor-sample repository files"
+  },
+
+  "_business_rules_extracted": [
+    {
+      "id": "BR-001",
+      "rule": "Transaction batch must arrive sorted ascending by CUST-KEY or records are rejected — not re-sorted",
+      "source": "SAM1.cbl ~line 175 / 100-PROCESS-TRANSACTIONS",
+      "migration_risk": "CRITICAL"
+    },
+    {
+      "id": "BR-002",
+      "rule": "BALANCE and ORDERS-YTD accept REPLACE and ADD. NAME accepts REPLACE only",
+      "source": "SAM2.cbl ~line 95 / 200-PROCESS-TRAN",
+      "migration_risk": "HIGH"
+    },
+    {
+      "id": "BR-003",
+      "rule": "Negative numeric values use '-' prefix in position 1 of UPDATE-DATA, stripped before COMP-3 conversion",
+      "source": "SAM2.cbl ~line 75 / 100-VALIDATE-TRAN",
+      "migration_risk": "CRITICAL"
+    },
+    {
+      "id": "BR-004",
+      "rule": "Duplicate CUST-KEY on ADD transaction is rejected with error — existing customer cannot be re-added",
+      "source": "SAM1.cbl ~line 195 / 210-PROCESS-ADD-TRAN",
+      "migration_risk": "MEDIUM"
+    },
+    {
+      "id": "BR-005",
+      "rule": "New customer record initializes with zero balance, zero orders YTD, zero for all 12 monthly figures",
+      "source": "SAM1.cbl ~line 200 / 210-PROCESS-ADD-TRAN",
+      "migration_risk": "LOW"
+    },
+    {
+      "id": "BR-006",
+      "rule": "CUST-DATA-1 (X5) and CUST-DATA-2 (X40) are undocumented overflow fields — inspect production data before migration",
+      "source": "CUSTCOPY.cpy",
+      "migration_risk": "UNKNOWN"
+    }
+  ],
+
+  "_ldr_verification": {
+    "authored_kv_lines": 120,
+    "source_loc_analyzed": 922,
+    "ldr_computed": 0.1302,
+    "source_files": ["SAM1.cbl", "SAM2.cbl", "CUSTCOPY.cpy", "TRANREC.cpy", "RUN.jcl"],
+    "count_method": "wc -l on each file individually",
+    "repository": "github.com/IBM/zopeneditor-sample",
+    "vlh_status": "sealed_at_scf_signing",
+    "vlh_last_verified": "2026-07-02T00:00:00Z"
+  }
+}

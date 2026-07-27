@@ -1,0 +1,208 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/ValueLogicsAI/AAEI/schemas/aaei_v1_2.json",
+  "title": "AAEI — AI Accountability Evidence Interchange",
+  "description": "Proposed OMG standard for portable, verifiable AI accountability evidence. Defines the minimum field set required to prove that an AI system, generated platform, or automated workflow delivered what it promised — across any vendor, platform, architecture, or regeneration cycle.",
+  "version": "1.2.0",
+  "status": "proposed",
+  "omg_submission_target": "2026-08-17",
+  "prior_art_date": "2026-06-26",
+  "license": "Apache-2.0",
+  "maintainer": "ValueLogics.ai LLC — as@valuelogics.ai",
+
+  "type": "object",
+
+  "required": [
+    "role", "problem_statement", "bau_measure", "ps_measure",
+    "delta", "fib_id", "sha256_hash", "lifecycle_mode"
+  ],
+
+  "properties": {
+
+    "_comment_v1_0": "── v1.0 CORE FIELDS (8) ──────────────────────────────────────",
+
+    "role": {
+      "type": "string",
+      "description": "Who the value contract serves. The role, persona, or organizational function responsible for the outcome.",
+      "examples": ["Operations / IT Leadership", "CFO", "VP Engineering", "Mainframe Modernization Team"],
+      "aaei_version": "1.0"
+    },
+
+    "problem_statement": {
+      "type": "string",
+      "description": "The specific business problem being addressed. Plain language. No jargon.",
+      "examples": ["Manual process overhead and unmeasured AI operating cost", "Legacy COBOL system contains undocumented business rules at risk of loss during migration"],
+      "aaei_version": "1.0"
+    },
+
+    "bau_measure": {
+      "type": ["number", "string"],
+      "description": "Baseline — the pre-solution measurement. The current state before ValueLogics or the AI system was applied. Must be expressed in the same unit as ps_measure.",
+      "examples": [8071, "8,071 LOC", "210ms", "166500 bytes/request", "922 COBOL source lines"],
+      "aaei_version": "1.0"
+    },
+
+    "ps_measure": {
+      "type": ["number", "string"],
+      "description": "Post-solution measurement. The state after ValueLogics or the AI system was applied. Same unit as bau_measure.",
+      "examples": [1211, "1,211 LOC", "174ms", "3200 bytes/request", "120 KV authored lines"],
+      "aaei_version": "1.0"
+    },
+
+    "delta": {
+      "type": ["number", "string"],
+      "description": "Measured or projected improvement. Expressed as a percentage reduction or absolute delta. Labeled as MEASURED or ESTIMATED.",
+      "examples": [85.0, "85.0% (estimated proxy)", "17.1% (measured)", "98.1% (measured)"],
+      "aaei_version": "1.0"
+    },
+
+    "fib_id": {
+      "type": "string",
+      "description": "Unique contract identifier. Format: fib_{org}-{hash_prefix}. Immutable once issued.",
+      "pattern": "^fib_[a-z0-9_\\-]+$",
+      "examples": ["fib_vl-esg-f47cfe2677fb", "fib_sf_acme_001"],
+      "aaei_version": "1.0"
+    },
+
+    "sha256_hash": {
+      "type": "string",
+      "description": "Immutable proof anchor. SHA-256 of the full AAEI record at the time of signing. Cannot be altered retroactively.",
+      "pattern": "^[a-f0-9]{64}$",
+      "aaei_version": "1.0"
+    },
+
+    "lifecycle_mode": {
+      "type": "string",
+      "enum": ["saas", "full", "agency"],
+      "description": "Engagement mode. saas = SaaS platform delivery. full = full enterprise engagement. agency = white-label agency delivery.",
+      "aaei_version": "1.0"
+    },
+
+    "_comment_v1_1": "── v1.1 ESG FIELDS (3) ────────────────────────────────────────",
+
+    "energy_proxy_pct": {
+      "type": ["number", "null"],
+      "description": "Runtime compute energy reduction expressed as a percentage. Proxy derived from latency reduction (energy ≈ power × time for CPU-bound workloads). Direct power telemetry (Intel RAPL / AWS CloudWatch) required for ISO 14064 certified carbon claim.",
+      "minimum": 0,
+      "maximum": 100,
+      "examples": [17.1],
+      "measurement_basis": "latency_proxy",
+      "aaei_version": "1.1"
+    },
+
+    "token_reduction_pct": {
+      "type": ["number", "null"],
+      "description": "AI token exposure reduction expressed as a percentage. Derived from LOC reduction proxy (AI agents read code surface; fewer LOC = fewer tokens per maintenance session). Direct token telemetry from AI platform API required for certified measurement.",
+      "minimum": 0,
+      "maximum": 100,
+      "examples": [85.0],
+      "measurement_basis": "loc_proxy",
+      "aaei_version": "1.1"
+    },
+
+    "network_reduction_pct": {
+      "type": ["number", "null"],
+      "description": "Network transfer reduction expressed as a percentage. Measured directly from before/after byte counts per request. IEA methodology: 0.06 kWh/GB. EPA eGRID: 0.386 kg CO2e/kWh.",
+      "minimum": 0,
+      "maximum": 100,
+      "examples": [98.1],
+      "measurement_basis": "direct_measurement",
+      "aaei_version": "1.1"
+    },
+
+    "_comment_v1_2": "── v1.2 PORTABLE LOGIC FIELDS (3) ─────────────────────────────",
+
+    "vlh": {
+      "type": ["string", "null"],
+      "description": "Value Logic Hash — SHA-256 fingerprint of the canonical logic contract. Computed from: problem_statement + role + bau_measure + goal_measure + business_rules + workflow_definitions + api_contracts + functional_equivalence_tests + proof_requirements + evidence_requirements. NOT a hash of files. A hash of meaning. If VLH matches before and after regeneration, business logic was preserved exactly. If VLH does not match, a rule, metric, or proof requirement changed — and the system can report exactly what changed.",
+      "pattern": "^[a-f0-9]{64}$",
+      "examples": ["a3f9e2c1d8b47f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2"],
+      "distinguishing_property": "A normal hash proves files did not change. The VLH proves business logic, behavior, and value promise did not change — even if the generated code is completely different.",
+      "aaei_version": "1.2"
+    },
+
+    "ldr_ratio": {
+      "type": ["number", "null"],
+      "description": "Logic Density Ratio — authored KV lines divided by source LOC analyzed. Measures how efficiently business logic has been compressed into a canonical representation. Lower is better. Industry baseline = 1.0 (no compression). ValueLogics target = 0.15 or below. A validated LDR report MUST include a VLH proving the extracted business intent survived compression losslessly.",
+      "minimum": 0,
+      "maximum": 10,
+      "examples": [0.15, 0.13],
+      "calculation": "authored_kv_lines / source_loc_analyzed",
+      "proof_points": {
+        "event_concierge_hq": "1211 / 8071 = 0.150 — measured wc -l on open_lovable.zip",
+        "ibm_cobol_sam1": "120 / 922 = 0.130 — measured wc -l on github.com/IBM/zopeneditor-sample"
+      },
+      "aaei_version": "1.2"
+    },
+
+    "source_snapshot_hash": {
+      "type": ["string", "null"],
+      "description": "SHA-256 of original source files before any ValueLogics processing. Proves provenance — what was analyzed. Computed before extract320.py or run_ai_app_refactor.py runs. This is the file hash. The VLH is the logic hash. Together they prove: (1) what was analyzed, (2) what business logic was extracted, and (3) whether that logic survived regeneration.",
+      "pattern": "^[a-f0-9]{64}$",
+      "examples": ["f47cfe2677fb3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b"],
+      "aaei_version": "1.2"
+    }
+  },
+
+  "hash_chain": {
+    "description": "The complete AAEI v1.2 proof chain — from source analysis to board-ready proof",
+    "sequence": [
+      {
+        "step": 1,
+        "field": "source_snapshot_hash",
+        "proves": "what was analyzed (file provenance)"
+      },
+      {
+        "step": 2,
+        "field": "vlh",
+        "proves": "what business logic was extracted (meaning continuity)"
+      },
+      {
+        "step": 3,
+        "field": "generated_surface_hash",
+        "proves": "what was emitted (artifact integrity)",
+        "note": "computed by VDSC implementation layer — not a public AAEI field"
+      },
+      {
+        "step": 4,
+        "field": "functional_equivalence_hash",
+        "proves": "behavior was preserved (test continuity)",
+        "note": "computed by VDSC implementation layer — planned for AAEI v1.3"
+      },
+      {
+        "step": 5,
+        "field": "sha256_hash",
+        "proves": "this AAEI record was not altered (record integrity)"
+      }
+    ]
+  },
+
+  "ldr_standard": {
+    "description": "The LDR Standard defines what a valid LDR measurement requires",
+    "requirements": [
+      "ldr_ratio must be computed from actual wc -l counts — not estimated",
+      "source_snapshot_hash must be present to prove what was counted",
+      "vlh must be present to prove lossless compression",
+      "All three fields together constitute a validated LDR report",
+      "LDR alone (without VLH) is a ratio, not a standard"
+    ],
+    "industry_baseline": 1.0,
+    "valuelogics_target": 0.15,
+    "interpretation": {
+      "below_0.2": "Elite compression — business logic fully portable",
+      "0.2_to_0.5": "Good compression — significant reduction achieved",
+      "0.5_to_0.8": "Moderate compression — some portability",
+      "above_0.8": "Minimal compression — logic still largely implementation-bound"
+    }
+  },
+
+  "additionalProperties": true,
+
+  "$defs": {
+    "lifecycle_modes": {
+      "saas": "SaaS platform delivery — generated platform hosted and operated",
+      "full": "Full enterprise engagement — design package + compiler + runtime proof",
+      "agency": "White-label agency delivery — client-branded output"
+    }
+  }
+}

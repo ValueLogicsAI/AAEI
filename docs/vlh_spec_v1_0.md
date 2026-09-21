@@ -1,5 +1,11 @@
 # Value Logic Hash (VLH) — Specification v1.0
-**AAEI v1.2 · ValueLogics.ai LLC · July 2, 2026**
+**DRAFT · ValueLogics.ai LLC · July 2, 2026**
+
+> **Status: DRAFT — separate from AAEI v1.2.**
+> This document is draft portable-logic / LDR / VLH work. VLH is not an
+> AAEI v1.2 field, and nothing here is submitted, tested, or covered by the
+> AAEI v1.2 conformance suite. AAEI v1.2 is the twelve-field schema at
+> `schemas/aaei_schema_v1_2.json`. See `drafts/README.md`.
 
 ---
 
@@ -91,12 +97,13 @@ The VLH captures *what the system must do*, not *how it does it*.
 4. functional_equiv_hash  ← SHA-256 of behavior test results
                              (proves the generated system behaves correctly)
          ↓
-5. aaei_proof_hash        ← SHA-256 of the full AAEI record
-                             (proves the accountability evidence is intact)
+5. aaei_proof_hash        ← SHA-256 of the full draft-profile record
+                             (proves the evidence record is intact)
 ```
 
 Steps 3 and 4 are computed by the VDSC implementation layer.
-Steps 1, 2, and 5 are public AAEI v1.2 fields.
+Steps 1, 2, and 5 are fields of the draft extended profile
+(`drafts/ldr_vlh_extended_profile_draft.json`). They are not AAEI v1.2 fields.
 
 ---
 
@@ -108,8 +115,9 @@ Before any regeneration:
 3. If match → regeneration proceeds
 4. If mismatch → regeneration blocked + diff report showing what changed
 
-The comparison happens inside the vault. Dewan receives pass/fail + diff.
-He never sees the canonical field list that feeds the hash.
+The comparison happens inside the vault. The system outputs pass/fail plus a
+diff report. The canonical field list that feeds the hash is not exposed in
+that output.
 
 ---
 
@@ -138,13 +146,16 @@ ValueLogics:     needs VLH (logic fingerprint)
 
 ---
 
-## Proof points
+## Examples
 
-| System | VLH computed from | Status |
-|--------|-------------------|--------|
-| Event Concierge HQ | 1,211 KV lines from 8,071 LOC Lovable app | Sealed June 29, 2026 |
-| IBM COBOL SAM1/SAM2 | 120 KV lines from 922 LOC COBOL source | Sealed July 2, 2026 |
-| Acme Industrial Corp SF | bc_acme_sf_001 VDSC contract | Sealed Q1 2026 |
+The rows below illustrate what a VLH would be computed from. They are
+examples based on stated line counts, not independently checked results.
+
+| System | VLH would be computed from | Status |
+|--------|----------------------------|--------|
+| Event Concierge HQ | 1,211 KV lines from 8,071 LOC Lovable app | Example |
+| IBM COBOL SAM1/SAM2 | 120 KV lines from 922 LOC COBOL source | Example |
+| Acme Industrial Corp SF | bc_acme_sf_001 VDSC contract | Example |
 
 ---
 
@@ -160,11 +171,15 @@ LDR + VLH:   "We compressed 85% — and every rule, metric,
               and proof obligation survived. Cryptographically proven."
 ```
 
+The quoted statements above, including "Cryptographically proven", are
+illustrative future-state language showing what each kind of report would
+say. They are not achieved results.
+
 A validated LDR standard report requires both.
 
 ---
 
-## AAEI field reference
+## Draft profile field reference
 
 ```json
 {
@@ -174,4 +189,5 @@ A validated LDR standard report requires both.
 }
 ```
 
-Introduced in AAEI v1.2 · OMG submission August 17, 2026.
+Defined in the draft extended profile
+(`drafts/ldr_vlh_extended_profile_draft.json`). Not part of AAEI v1.2. Unsubmitted.

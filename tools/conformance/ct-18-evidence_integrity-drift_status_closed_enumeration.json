@@ -1,7 +1,7 @@
 {
   "id": "CT-18",
   "category": "evidence_integrity",
-  "name": "drift_status derivability",
+  "name": "drift_status closed enumeration",
   "description": "Verifies drift_status is an enumerated classification field \u2014 on_track, at_risk, or drifting \u2014 and does not accept free-form strings. The classification must be derivable from measured evidence.",
   "mof_rule": "M2 enumeration DriftStatus \u2014 closed set, not a free-form field",
   "pass_fixture": {

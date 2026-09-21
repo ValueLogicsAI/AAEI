@@ -1,0 +1,31 @@
+name: AAEI conformance
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install the documented dependency
+        run: python3 -m pip install -r requirements.txt
+
+      - name: Run the conformance suite (canonical command)
+        run: python3 tools/conformance/run_conformance_suite.py
+
+      - name: Validate all example records
+        run: python3 tools/validate_aaei.py --examples
+
+      - name: Confirm the run modified no tracked file
+        run: git diff --exit-code

@@ -39,6 +39,42 @@ twelve fields only.
 
 ---
 
+## Test tooling — September 21, 2026
+
+No change to the AAEI v1.2 schema or to the inline assertions of the 18
+conformance tests. The conformance count stays 18.
+
+- `requirements.txt` added: `jsonschema==4.26.0` (Python 3.10 or later).
+- `tools/conformance/run_conformance_suite.py` and `tools/validate_aaei.py`
+  no longer run `pip install`. If `jsonschema` is missing they print the
+  install command and exit with code 2.
+- The runner now executes each test's fixture file: the fixture's `id`,
+  `category` and `name` must match the test, every `pass_fixture*` must
+  validate, and a non-null `fail_fixture` must be rejected.
+- Fixture names reconciled with the runner and the July 9, 2026 report:
+  CT-15 "String field Unicode encoding" and CT-18 "drift_status closed
+  enumeration". The two fixture files were renamed to match. Fixture
+  descriptions are unchanged.
+- Three supplementary checks added, counted separately from the 18:
+  SC-01 `delta.direction` closed enumeration (metamodel constraint C2);
+  SC-02 `mof/aaei_xmi_example.xml` is well-formed and uses only field names,
+  enumeration values and the hash pattern the schema allows; SC-03 every
+  record in `examples/` validates.
+- `python3 tools/validate_aaei.py --examples` validates all example records
+  in one command. `--record` accepts more than one path.
+- The runner writes no file unless `--report PATH` is given, so a run no
+  longer modifies the tracked `conformance_report.json`.
+- `datetime.utcnow()` replaced with a timezone-aware UTC timestamp.
+- `.github/workflows/conformance.yml` added: installs `requirements.txt`,
+  runs the suite and the example validation, and fails if a tracked file
+  changed.
+
+Not tested, because the repository defines no rule to test against:
+XMI-to-JSON value mapping, XMI schema validation, and whether a
+`drift_status` value is derivable from the measures.
+
+---
+
 ## Repository reconciliation — September 21, 2026
 
 A merge on July 27, 2026 (`110780e`) added a second, 14-field schema that was

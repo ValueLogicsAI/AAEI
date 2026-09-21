@@ -1,0 +1,26 @@
+{
+  "id": "SC-01",
+  "category": "supplementary",
+  "name": "delta direction enumeration constraint",
+  "description": "Verifies delta.direction accepts only reduction, increase, or neutral and rejects any other string. Supplementary check: not one of the 18 conformance tests.",
+  "mof_rule": "M2 constraint C2 (mof/aaei_mof_metamodel.md, section 4) — OutcomeDelta.direction is a closed enumeration {reduction, increase, neutral}",
+  "pass_fixture": {
+    "role": "cto-agent",
+    "problem": "refactoring drag",
+    "delta": {
+      "value": 210,
+      "unit": "minutes",
+      "direction": "reduction"
+    }
+  },
+  "fail_fixture": {
+    "role": "cto-agent",
+    "problem": "refactoring drag",
+    "delta": {
+      "value": 210,
+      "unit": "minutes",
+      "direction": "sideways"
+    }
+  },
+  "assertion": "pass_fixture validates; fail_fixture raises ValidationError — non-enum direction rejected"
+}

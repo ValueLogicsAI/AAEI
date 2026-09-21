@@ -11,33 +11,54 @@ Tests are categorized per the OMG submission paper (Section 4):
   CT-13–CT-16: Interchange conformance
   CT-17–CT-18: Evidence integrity
 
+Each CT test runs its inline assertions AND its fixture file
+(tools/conformance/ct-NN-*.json): the fixture must carry the same id,
+category and name as the test, every pass_fixture* record must validate,
+and a non-null fail_fixture must be rejected.
+
+Supplementary checks (SC-01–SC-03) run after the 18 conformance tests and
+are counted separately. They do not change the 18-test conformance count.
+
+Setup:
+  python3 -m pip install -r requirements.txt
+
 Usage:
-  python3 run_conformance_suite.py
+  python3 tools/conformance/run_conformance_suite.py
+  python3 tools/conformance/run_conformance_suite.py --report PATH
 
 Output:
-  Console report + conformance_report.json
+  Console report. No file is written unless --report PATH is given.
+
+Exit code: 0 if every conformance test and supplementary check passes,
+1 otherwise, 2 if the jsonschema dependency is missing.
 
 Repository: github.com/ValueLogicsAI/AAEI
 License:    Apache 2.0
 Author:     ValueLogics.ai LLC
 """
 
-import json, sys, os, datetime
+import argparse, json, re, sys, datetime
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 try:
     import jsonschema
     from jsonschema import validate, ValidationError, Draft202012Validator
 except ImportError:
-    print("Installing jsonschema...")
-    os.system("pip install jsonschema --break-system-packages -q")
-    import jsonschema
-    from jsonschema import validate, ValidationError, Draft202012Validator
+    sys.stderr.write(
+        "ERROR: the 'jsonschema' package is required and is not installed.\n"
+        "Install it with:\n"
+        "  python3 -m pip install -r requirements.txt\n"
+    )
+    sys.exit(2)
 
 # ── Paths ─────────────────────────────────────────────────────────────────
 SUITE_DIR  = Path(__file__).parent
-SCHEMA_DIR = SUITE_DIR.parent.parent / "schemas"
+REPO_ROOT  = SUITE_DIR.parent.parent
+SCHEMA_DIR = REPO_ROOT / "schemas"
 SCHEMA_FILE = SCHEMA_DIR / "aaei_schema_v1_2.json"
+EXAMPLES_DIR = REPO_ROOT / "examples"
+XMI_EXAMPLE  = REPO_ROOT / "mof" / "aaei_xmi_example.xml"
 
 if not SCHEMA_FILE.exists():
     # Try relative path for running from repo root
@@ -63,6 +84,32 @@ def must_fail(record):
     except ValidationError:
         return True
 
+# ── Fixture execution ─────────────────────────────────────────────────────
+def load_fixture(test_id):
+    """Returns (path, fixture) for the single fixture file of a test id."""
+    matches = sorted(SUITE_DIR.glob(f"{test_id.lower()}-*.json"))
+    if len(matches) != 1:
+        raise AssertionError(
+            f"expected exactly one fixture file for {test_id}, found {len(matches)}")
+    return matches[0], json.loads(matches[0].read_text(encoding="utf-8"))
+
+def fixture_problems(test_id, category, name):
+    """Runs a test's fixture file. Returns a list of problems (empty = fixture passes)."""
+    path, fx = load_fixture(test_id)
+    problems = []
+    for key, expected in (("id", test_id), ("category", category), ("name", name)):
+        if fx.get(key) != expected:
+            problems.append(f"{path.name}: {key} is {fx.get(key)!r}, test declares {expected!r}")
+    pass_keys = [k for k in fx if k.startswith("pass_fixture")]
+    if not pass_keys:
+        problems.append(f"{path.name}: no pass_fixture")
+    for key in pass_keys:
+        if not ok(fx[key]):
+            problems.append(f"{path.name}: {key} does not validate")
+    if fx.get("fail_fixture") is not None and not must_fail(fx["fail_fixture"]):
+        problems.append(f"{path.name}: fail_fixture validates but must be rejected")
+    return problems
+
 # ── Test definitions ──────────────────────────────────────────────────────
 def run_tests():
     results = []
@@ -70,10 +117,11 @@ def run_tests():
     def test(ct_id, category, name, fn):
         try:
             passed = fn()
+            problems = fixture_problems(ct_id, category, name)
             results.append({
                 "id": ct_id, "category": category, "name": name,
-                "status": "PASS" if passed else "FAIL",
-                "error": None
+                "status": "PASS" if passed and not problems else "FAIL",
+                "error": "; ".join(problems) if problems else None
             })
         except Exception as e:
             results.append({
@@ -265,8 +313,127 @@ def run_tests():
 
     return results
 
+# ── Supplementary checks ──────────────────────────────────────────────────
+# Counted separately from the 18 conformance tests.
+def local_name(tag):
+    """XML local name without its namespace."""
+    return tag.rsplit("}", 1)[-1]
+
+def plain_attributes(element):
+    """Attributes that are not in an XML namespace (drops xmi:id, xmi:type)."""
+    return {k: v for k, v in element.attrib.items() if not k.startswith("{")}
+
+def xmi_example_problems():
+    """
+    Checks mof/aaei_xmi_example.xml against the schema's closed world.
+    Names, required attributes, enumerations and the hash pattern all come
+    from the schema. Numeric typing is not checked: the repository defines
+    no XMI-to-JSON value mapping and no XMI schema.
+    """
+    problems = []
+    root = ET.parse(XMI_EXAMPLE).getroot()  # raises if not well-formed XML
+    if local_name(root.tag) != "XMI":
+        problems.append(f"root element is {local_name(root.tag)!r}, expected 'XMI'")
+    instances = [e for e in root.iter() if local_name(e.tag) == "AccountabilityEvidence"]
+    if not instances:
+        problems.append("no AccountabilityEvidence instance")
+    props = schema["properties"]
+    for inst in instances:
+        attrs = plain_attributes(inst)
+        for name, value in attrs.items():
+            if name not in props:
+                problems.append(f"attribute {name!r} is not an AAEI field")
+                continue
+            enum = [x for x in props[name].get("enum", []) if x is not None]
+            if enum and value not in enum:
+                problems.append(f"{name}={value!r} is not one of {enum}")
+            pattern = props[name].get("pattern")
+            if pattern and not re.search(pattern, value):
+                problems.append(f"{name}={value!r} does not match {pattern}")
+        for req in schema["required"]:
+            if not attrs.get(req):
+                problems.append(f"required attribute {req!r} is missing")
+        for child in inst:
+            cname = local_name(child.tag)
+            if "properties" not in props.get(cname, {}):
+                problems.append(f"element {cname!r} is not an AAEI object field")
+                continue
+            sub, cattrs = props[cname]["properties"], plain_attributes(child)
+            for name, value in cattrs.items():
+                if name not in sub:
+                    problems.append(f"{cname}.{name} is not declared by the schema")
+                elif sub[name].get("enum") and value not in sub[name]["enum"]:
+                    problems.append(f"{cname}.{name}={value!r} is not one of {sub[name]['enum']}")
+            for req in props[cname].get("required", []):
+                if req not in cattrs:
+                    problems.append(f"{cname}.{req} is missing")
+    return problems
+
+def example_problems():
+    """Every examples/*.json record must validate (keys starting with '_' are comments)."""
+    paths = sorted(EXAMPLES_DIR.glob("*.json"))
+    if not paths:
+        return [f"no example records found in {EXAMPLES_DIR}"]
+    problems = []
+    for path in paths:
+        record = json.loads(path.read_text(encoding="utf-8"))
+        record = {k: v for k, v in record.items() if not k.startswith("_")}
+        if not ok(record):
+            problems.append(f"{path.name} does not validate")
+    return problems
+
+def run_supplementary():
+    results = []
+
+    def check(sc_id, name, fn):
+        try:
+            problems = fn()
+        except Exception as e:
+            problems = [str(e)]
+        results.append({
+            "id": sc_id, "category": "supplementary", "name": name,
+            "status": "PASS" if not problems else "FAIL",
+            "error": "; ".join(problems) if problems else None
+        })
+
+    # ── SC-01: delta.direction closed enumeration (metamodel constraint C2) ─
+    def sc_01():
+        base = {"role": "r", "problem": "p"}
+        inline = (
+            all(ok({**base, "delta": {"value": 1, "unit": "u", "direction": d}})
+                for d in ["reduction", "increase", "neutral"]) and
+            must_fail({**base, "delta": {"value": 1, "unit": "u", "direction": "sideways"}})
+        )
+        problems = [] if inline else ["inline assertions failed"]
+        return problems + fixture_problems(
+            "SC-01", "supplementary", "delta direction enumeration constraint")
+    check("SC-01", "delta direction enumeration constraint", sc_01)
+
+    # ── SC-02: XMI example is well-formed and closed-world consistent ──────
+    check("SC-02", "XMI example well-formed and closed-world consistent", xmi_example_problems)
+
+    # ── SC-03: all example records validate ───────────────────────────────
+    check("SC-03", "Example records validate", example_problems)
+
+    return results
+
+def print_group(title, group):
+    n_ok = sum(1 for r in group if r["status"] == "PASS")
+    print(f"  {title:<25}  {n_ok}/{len(group)}")
+    for r in group:
+        icon = "✓" if r["status"] == "PASS" else "✗"
+        print(f"    {icon} {r['id']}  {r['name']}")
+        if r["error"]:
+            print(f"         ERROR: {r['error']}")
+    print()
+
 # ── Run and report ─────────────────────────────────────────────────────────
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="AAEI v1.2 MOF conformance test suite")
+    parser.add_argument("--report", metavar="PATH",
+                        help="write a machine-readable JSON report to PATH (default: no file is written)")
+    args = parser.parse_args()
+
     print("=" * 62)
     print("  AAEI v1.2 — MOF Conformance Test Suite")
     print("  github.com/ValueLogicsAI/AAEI · Apache 2.0")
@@ -279,44 +446,48 @@ if __name__ == "__main__":
 
     categories = ["structural","semantic","generation","interchange","evidence_integrity"]
     for cat in categories:
-        cat_results = [r for r in results if r["category"] == cat]
-        cat_pass    = sum(1 for r in cat_results if r["status"] == "PASS")
-        print(f"  {cat.upper().replace('_',' '):<25}  {cat_pass}/{len(cat_results)}")
-        for r in cat_results:
-            icon = "✓" if r["status"] == "PASS" else "✗"
-            print(f"    {icon} {r['id']}  {r['name']}")
-            if r["error"]:
-                print(f"         ERROR: {r['error']}")
-        print()
+        print_group(cat.upper().replace('_',' '), [r for r in results if r["category"] == cat])
+
+    supplementary = run_supplementary()
+    sc_failed = [r for r in supplementary if r["status"] == "FAIL"]
+    print_group("SUPPLEMENTARY CHECKS", supplementary)
 
     print("=" * 62)
     total = len(results)
     n_pass = len(passed)
     print(f"  RESULT: {n_pass}/{total} tests passing")
-    if n_pass == total:
-        print(f"  STATUS: ✓ AAEI v1.2 MOF CONFORMANCE VERIFIED")
-    else:
+    print(f"  SUPPLEMENTARY: {len(supplementary) - len(sc_failed)}/{len(supplementary)} checks passing")
+    if failed:
         print(f"  STATUS: ✗ {len(failed)} test(s) FAILED — see above")
+    elif sc_failed:
+        print(f"  STATUS: ✗ {len(sc_failed)} supplementary check(s) FAILED — see above")
+    else:
+        print(f"  STATUS: ✓ AAEI v1.2 MOF CONFORMANCE VERIFIED")
     print("=" * 62)
 
-    # Write machine-readable report
-    report = {
-        "standard": "AAEI v1.2 — AI Accountability Evidence Interchange",
-        "mof_version": "MOF 2.5.1 (formal/16-11-01)",
-        "run_timestamp": datetime.datetime.utcnow().isoformat() + "Z",
-        "schema": "schemas/aaei_schema_v1_2.json",
-        "repository": "github.com/ValueLogicsAI/AAEI",
-        "license": "Apache 2.0",
-        "summary": {
-            "total": total,
-            "passed": n_pass,
-            "failed": len(failed),
-            "conformant": n_pass == total
-        },
-        "results": results
-    }
-    report_path = Path(__file__).parent / "conformance_report.json"
-    report_path.write_text(json.dumps(report, indent=2))
-    print(f"\n  Report written: tools/conformance/conformance_report.json")
+    if args.report:
+        report = {
+            "standard": "AAEI v1.2 — AI Accountability Evidence Interchange",
+            "mof_version": "MOF 2.5.1 (formal/16-11-01)",
+            "run_timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat().replace("+00:00", "Z"),
+            "schema": "schemas/aaei_schema_v1_2.json",
+            "repository": "github.com/ValueLogicsAI/AAEI",
+            "license": "Apache 2.0",
+            "summary": {
+                "total": total,
+                "passed": n_pass,
+                "failed": len(failed),
+                "conformant": n_pass == total
+            },
+            "results": results,
+            "supplementary_summary": {
+                "total": len(supplementary),
+                "passed": len(supplementary) - len(sc_failed),
+                "failed": len(sc_failed)
+            },
+            "supplementary": supplementary
+        }
+        Path(args.report).write_text(json.dumps(report, indent=2), encoding="utf-8")
+        print(f"\n  Report written: {args.report}")
 
-    sys.exit(0 if n_pass == total else 1)
+    sys.exit(0 if not failed and not sc_failed else 1)

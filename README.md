@@ -89,14 +89,22 @@ The standard is minimal by design. AAEI does not define how agents are built, ho
 git clone https://github.com/ValueLogicsAI/AAEI
 cd AAEI
 
+# Install the one dependency (jsonschema, pinned). Requires Python 3.10 or later.
+python3 -m pip install -r requirements.txt
+
 # Validate an example record
 python3 tools/validate_aaei.py --record examples/example_02_ai_agent.json
+
+# Validate all three example records
+python3 tools/validate_aaei.py --examples
 
 # Run the full MOF conformance suite
 python3 tools/conformance/run_conformance_suite.py
 ```
 
 Expected: `18/18 tests passing · STATUS: ✓ AAEI v1.2 MOF CONFORMANCE VERIFIED`
+
+The suite also runs three supplementary checks (SC-01 to SC-03), counted separately from the 18 conformance tests. It writes no file unless you pass `--report PATH`. The tools do not install anything: if `jsonschema` is missing they stop with an error and exit code 2.
 
 ---
 
@@ -188,6 +196,11 @@ AAEI/
 ├── CHANGELOG.md
 ├── LICENSE                                Apache 2.0
 ├── NOTICE                                 Prior art declaration
+├── requirements.txt                       Pinned dependency (jsonschema)
+│
+├── .github/
+│   └── workflows/
+│       └── conformance.yml               CI: runs the suite on a clean checkout
 │
 ├── schemas/
 │   └── aaei_schema_v1_2.json             JSON Schema (Draft 2020-12)
@@ -209,8 +222,9 @@ AAEI/
 │   ├── validate_aaei.py                  CLI record validator
 │   └── conformance/
 │       ├── run_conformance_suite.py      18/18 conformance test runner
-│       ├── ct-01 through ct-18 .json    Individual test fixtures
-│       └── conformance_report.json      Machine-readable pass report
+│       ├── ct-01 through ct-18 .json    Individual test fixtures (executed by the runner)
+│       ├── sc-01 .json                   Supplementary check fixture
+│       └── conformance_report.json      Machine-readable pass report (July 9, 2026 run)
 │
 ├── docs/                                  Draft material — not part of AAEI v1.2
 │   ├── vlh_spec_v1_0.md                  Draft VLH specification

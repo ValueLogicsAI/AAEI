@@ -1,5 +1,5 @@
 {
-  "_comment": "AAEI v1.2 example — Event Concierge HQ · Lovable to ValueLogics conversion · June 29, 2026",
+  "_comment": "DRAFT portable-logic / LDR / VLH extended-profile example — NOT AAEI v1.2; does not validate against schemas/aaei_schema_v1_2.json — Event Concierge HQ · Lovable to ValueLogics conversion · June 29, 2026",
   "_source": "open_lovable.zip · LOC counted via wc -l · benchmark instrumented on CF Edge deployment",
 
   "role": "Operations / IT Leadership",
@@ -45,9 +45,7 @@
     "source_loc_analyzed": 8071,
     "ldr_computed": 0.1500,
     "source_file": "open_lovable.zip",
-    "count_method": "wc -l on all .py .js .jsx .ts .tsx .html .css .json .sql .yml .yaml .md files, excluding node_modules dist build __MACOSX .git",
-    "vlh_status": "sealed_at_scf_signing",
-    "vlh_last_verified": "2026-06-29T02:19:34Z"
+    "count_method": "wc -l on all .py .js .jsx .ts .tsx .html .css .json .sql .yml .yaml .md files, excluding node_modules dist build __MACOSX .git"
   },
 
   "_token_cost_projection": {

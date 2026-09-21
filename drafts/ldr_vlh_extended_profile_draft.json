@@ -1,12 +1,11 @@
 {
+  "_NOTE": "DRAFT extension profile - NOT AAEI v1.2. AAEI v1.2 is the twelve-field schema at schemas/aaei_schema_v1_2.json, which is what the OMG submission paper and the three Letters of Intent specify. This file holds the field design for the LDR and VLH standards, referenced in the MDA Working Group LOI as future submissions. It is unsubmitted and untested.",
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://github.com/ValueLogicsAI/AAEI/schemas/aaei_v1_2.json",
-  "title": "AAEI — AI Accountability Evidence Interchange",
-  "description": "Proposed OMG standard for portable, verifiable AI accountability evidence. Defines the minimum field set required to prove that an AI system, generated platform, or automated workflow delivered what it promised — across any vendor, platform, architecture, or regeneration cycle.",
-  "version": "1.2.0",
-  "status": "proposed",
-  "omg_submission_target": "2026-08-17",
-  "prior_art_date": "2026-06-26",
+  "$id": "https://github.com/ValueLogicsAI/AAEI/drafts/ldr_vlh_extended_profile_draft.json",
+  "title": "DRAFT — Portable Logic / LDR / VLH Extended Profile (separate from AAEI v1.2)",
+  "description": "DRAFT extension profile holding portable-logic, LDR (Logic Density Ratio) and VLH (Value Logic Hash) field design. Separate from AAEI v1.2. Unsubmitted and untested. Briefly published as schemas/aaei_v1_2.json, where it conflicted with the AAEI v1.2 schema.",
+  "version": "draft",
+  "status": "draft — unsubmitted, untested, not part of AAEI v1.2",
   "license": "Apache-2.0",
   "maintainer": "ValueLogics.ai LLC — as@valuelogics.ai",
 
@@ -19,41 +18,41 @@
 
   "properties": {
 
-    "_comment_v1_0": "── v1.0 CORE FIELDS (8) ──────────────────────────────────────",
+    "_comment_core": "── DRAFT CORE FIELDS (8) ──────────────────────────────────────",
 
     "role": {
       "type": "string",
       "description": "Who the value contract serves. The role, persona, or organizational function responsible for the outcome.",
       "examples": ["Operations / IT Leadership", "CFO", "VP Engineering", "Mainframe Modernization Team"],
-      "aaei_version": "1.0"
+      "draft_field_group": "core"
     },
 
     "problem_statement": {
       "type": "string",
       "description": "The specific business problem being addressed. Plain language. No jargon.",
       "examples": ["Manual process overhead and unmeasured AI operating cost", "Legacy COBOL system contains undocumented business rules at risk of loss during migration"],
-      "aaei_version": "1.0"
+      "draft_field_group": "core"
     },
 
     "bau_measure": {
       "type": ["number", "string"],
       "description": "Baseline — the pre-solution measurement. The current state before ValueLogics or the AI system was applied. Must be expressed in the same unit as ps_measure.",
       "examples": [8071, "8,071 LOC", "210ms", "166500 bytes/request", "922 COBOL source lines"],
-      "aaei_version": "1.0"
+      "draft_field_group": "core"
     },
 
     "ps_measure": {
       "type": ["number", "string"],
       "description": "Post-solution measurement. The state after ValueLogics or the AI system was applied. Same unit as bau_measure.",
       "examples": [1211, "1,211 LOC", "174ms", "3200 bytes/request", "120 KV authored lines"],
-      "aaei_version": "1.0"
+      "draft_field_group": "core"
     },
 
     "delta": {
       "type": ["number", "string"],
       "description": "Measured or projected improvement. Expressed as a percentage reduction or absolute delta. Labeled as MEASURED or ESTIMATED.",
       "examples": [85.0, "85.0% (estimated proxy)", "17.1% (measured)", "98.1% (measured)"],
-      "aaei_version": "1.0"
+      "draft_field_group": "core"
     },
 
     "fib_id": {
@@ -61,24 +60,24 @@
       "description": "Unique contract identifier. Format: fib_{org}-{hash_prefix}. Immutable once issued.",
       "pattern": "^fib_[a-z0-9_\\-]+$",
       "examples": ["fib_vl-esg-f47cfe2677fb", "fib_sf_acme_001"],
-      "aaei_version": "1.0"
+      "draft_field_group": "core"
     },
 
     "sha256_hash": {
       "type": "string",
-      "description": "Immutable proof anchor. SHA-256 of the full AAEI record at the time of signing. Cannot be altered retroactively.",
+      "description": "Immutable proof anchor. SHA-256 of the full draft-profile record at the time of signing. Cannot be altered retroactively.",
       "pattern": "^[a-f0-9]{64}$",
-      "aaei_version": "1.0"
+      "draft_field_group": "core"
     },
 
     "lifecycle_mode": {
       "type": "string",
       "enum": ["saas", "full", "agency"],
       "description": "Engagement mode. saas = SaaS platform delivery. full = full enterprise engagement. agency = white-label agency delivery.",
-      "aaei_version": "1.0"
+      "draft_field_group": "core"
     },
 
-    "_comment_v1_1": "── v1.1 ESG FIELDS (3) ────────────────────────────────────────",
+    "_comment_esg": "── DRAFT ESG FIELDS (3) ────────────────────────────────────────",
 
     "energy_proxy_pct": {
       "type": ["number", "null"],
@@ -87,7 +86,7 @@
       "maximum": 100,
       "examples": [17.1],
       "measurement_basis": "latency_proxy",
-      "aaei_version": "1.1"
+      "draft_field_group": "esg"
     },
 
     "token_reduction_pct": {
@@ -97,7 +96,7 @@
       "maximum": 100,
       "examples": [85.0],
       "measurement_basis": "loc_proxy",
-      "aaei_version": "1.1"
+      "draft_field_group": "esg"
     },
 
     "network_reduction_pct": {
@@ -107,10 +106,10 @@
       "maximum": 100,
       "examples": [98.1],
       "measurement_basis": "direct_measurement",
-      "aaei_version": "1.1"
+      "draft_field_group": "esg"
     },
 
-    "_comment_v1_2": "── v1.2 PORTABLE LOGIC FIELDS (3) ─────────────────────────────",
+    "_comment_portable_logic": "── DRAFT PORTABLE LOGIC FIELDS (3) ─────────────────────────────",
 
     "vlh": {
       "type": ["string", "null"],
@@ -118,7 +117,7 @@
       "pattern": "^[a-f0-9]{64}$",
       "examples": ["a3f9e2c1d8b47f6e5d4c3b2a1f0e9d8c7b6a5f4e3d2c1b0a9f8e7d6c5b4a3f2"],
       "distinguishing_property": "A normal hash proves files did not change. The VLH proves business logic, behavior, and value promise did not change — even if the generated code is completely different.",
-      "aaei_version": "1.2"
+      "draft_field_group": "portable_logic"
     },
 
     "ldr_ratio": {
@@ -129,10 +128,10 @@
       "examples": [0.15, 0.13],
       "calculation": "authored_kv_lines / source_loc_analyzed",
       "proof_points": {
-        "event_concierge_hq": "1211 / 8071 = 0.150 — measured wc -l on open_lovable.zip",
-        "ibm_cobol_sam1": "120 / 922 = 0.130 — measured wc -l on github.com/IBM/zopeneditor-sample"
+        "event_concierge_hq": "1211 / 8071 = 0.150 — example calculation from stated line counts (open_lovable.zip)",
+        "ibm_cobol_sam1": "120 / 922 = 0.130 — example calculation from stated line counts (github.com/IBM/zopeneditor-sample)"
       },
-      "aaei_version": "1.2"
+      "draft_field_group": "portable_logic"
     },
 
     "source_snapshot_hash": {
@@ -140,12 +139,12 @@
       "description": "SHA-256 of original source files before any ValueLogics processing. Proves provenance — what was analyzed. Computed before extract320.py or run_ai_app_refactor.py runs. This is the file hash. The VLH is the logic hash. Together they prove: (1) what was analyzed, (2) what business logic was extracted, and (3) whether that logic survived regeneration.",
       "pattern": "^[a-f0-9]{64}$",
       "examples": ["f47cfe2677fb3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b"],
-      "aaei_version": "1.2"
+      "draft_field_group": "portable_logic"
     }
   },
 
   "hash_chain": {
-    "description": "The complete AAEI v1.2 proof chain — from source analysis to board-ready proof",
+    "description": "The draft portable-logic proof chain — from source analysis to board-ready proof. Not part of AAEI v1.2.",
     "sequence": [
       {
         "step": 1,
@@ -161,18 +160,18 @@
         "step": 3,
         "field": "generated_surface_hash",
         "proves": "what was emitted (artifact integrity)",
-        "note": "computed by VDSC implementation layer — not a public AAEI field"
+        "note": "computed by VDSC implementation layer — not a field of this draft profile"
       },
       {
         "step": 4,
         "field": "functional_equivalence_hash",
         "proves": "behavior was preserved (test continuity)",
-        "note": "computed by VDSC implementation layer — planned for AAEI v1.3"
+        "note": "computed by VDSC implementation layer — not a field of this draft profile"
       },
       {
         "step": 5,
         "field": "sha256_hash",
-        "proves": "this AAEI record was not altered (record integrity)"
+        "proves": "this draft-profile record was not altered (record integrity)"
       }
     ]
   },

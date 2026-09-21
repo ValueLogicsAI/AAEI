@@ -1,5 +1,5 @@
 {
-  "_comment": "AAEI v1.2 example — IBM z/OS COBOL SAM1/SAM2 Value Logic Identification · July 2, 2026",
+  "_comment": "DRAFT portable-logic / LDR / VLH extended-profile example — NOT AAEI v1.2; does not validate against schemas/aaei_schema_v1_2.json — IBM z/OS COBOL SAM1/SAM2 Value Logic Identification · July 2, 2026",
   "_source": "github.com/IBM/zopeneditor-sample · LOC counted via wc -l on SAM1.cbl SAM2.cbl CUSTCOPY.cpy TRANREC.cpy RUN.jcl",
 
   "role": "Mainframe Modernization Team / Enterprise Architecture",
@@ -82,8 +82,6 @@
     "ldr_computed": 0.1302,
     "source_files": ["SAM1.cbl", "SAM2.cbl", "CUSTCOPY.cpy", "TRANREC.cpy", "RUN.jcl"],
     "count_method": "wc -l on each file individually",
-    "repository": "github.com/IBM/zopeneditor-sample",
-    "vlh_status": "sealed_at_scf_signing",
-    "vlh_last_verified": "2026-07-02T00:00:00Z"
+    "repository": "github.com/IBM/zopeneditor-sample"
   }
 }

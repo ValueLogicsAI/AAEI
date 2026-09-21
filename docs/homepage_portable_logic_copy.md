@@ -2,6 +2,13 @@
 # valuelogics.ai · "AI Value Accountability"
 # Section: after hero, before offer ladder
 
+> **Status: DRAFT — separate from AAEI v1.2.**
+> This file is draft copy for ValueLogics portable-logic / LDR / VLH work.
+> Portable logic, LDR, VLH and the ESG reduction metrics are not AAEI v1.2
+> fields. AAEI v1.2 is the twelve-field schema at
+> `schemas/aaei_schema_v1_2.json`. The LDR figures below are published
+> example calculations, not audited AAEI v1.2 proof. See `drafts/README.md`.
+
 ---
 
 ## HEADLINE OPTIONS (pick one)
@@ -58,11 +65,11 @@ every platform change — with a board-shareable cryptographic proof.
 
 | Stat | Value | Source |
 |------|-------|--------|
-| LDR | 0.15 | Event Concierge HQ — wc -l verified |
+| LDR | 0.15 | Event Concierge HQ — example calculation from stated line counts |
 | Code reduction | 85% | 8,071 LOC → 1,211 LOC |
 | Token cost reduction | 85% | AI maintenance ops at same LDR |
-| Network reduction | 98.1% | 166,500 → 3,200 bytes — measured |
-| Business rules preserved | 100% | VLH match confirmed |
+| Network reduction | 98.1% | 166,500 → 3,200 bytes — example calculation |
+| Business rules preserved | 100% | VLH match example |
 
 ---
 
@@ -117,17 +124,20 @@ the change is authorized.
 
 ## AAEI STANDARDS SECTION
 
-### Open Standard — OMG Submission August 2026
+### Open Standard — Proposed to OMG
 
-ValueLogics is submitting the AI Accountability Evidence
-Interchange (AAEI) standard to the Object Management Group (OMG).
+AAEI is the AI Accountability Evidence Interchange standard.
+AAEI v1.2 is a proposed OMG standard; Letters of Intent identify it for submission.
 
-AAEI defines 14 fields for portable AI accountability evidence —
-including energy reduction, token cost reduction, and the
-Value Logic Hash for logic continuity proof.
+AAEI v1.2 defines 12 public fields for AI accountability evidence,
+including two bridge fields to the OMG Business Motivation Model (BMM).
+
+Energy reduction, token cost reduction, LDR and the Value Logic Hash
+are not AAEI v1.2 fields. They are separate draft portable-logic /
+LDR / VLH work.
 
 Apache 2.0 · github.com/ValueLogicsAI/AAEI
-Prior art: June 26, 2026 · OMG target: August 17, 2026
+Prior art: June 26, 2026 · LOI deadline: August 17, 2026
 
 ---
 

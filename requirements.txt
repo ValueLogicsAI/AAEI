@@ -1,0 +1,3 @@
+# Required by tools/validate_aaei.py and tools/conformance/run_conformance_suite.py
+# jsonschema 4.26.0 requires Python 3.10 or later.
+jsonschema==4.26.0

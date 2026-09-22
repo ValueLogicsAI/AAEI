@@ -1,4 +1,5 @@
 # Value Logic Hash (VLH) — Specification v1.0
+
 **DRAFT · ValueLogics.ai LLC · July 2, 2026**
 
 > **Status: DRAFT — separate from AAEI v1.2.**
@@ -12,11 +13,9 @@
 ## Definition
 
 ```
-Value Logic Hash = SHA-256 fingerprint of the business logic
-contract — not the files, but the meaning: the business problem,
-every rule, every metric, the goal measures, the workflow
-definitions, the API contracts, the functional equivalence tests,
-and the proof requirements required to regenerate and prove a system.
+Value Logic Hash = SHA-256 fingerprint of a business logic contract —
+not the files, but the meaning: what the system must do, and what it
+must prove.
 ```
 
 ---
@@ -25,11 +24,11 @@ and the proof requirements required to regenerate and prove a system.
 
 A file hash proves: *these files did not change.*
 
-A Value Logic Hash proves: *this business logic, behavior, and
-value promise did not change — even if the generated code is
-completely different.*
+A Value Logic Hash proves: *this business logic, behavior, and value promise
+did not change — even if the generated code is completely different.*
 
 This distinction matters when:
+
 - Regenerating a platform with a new framework
 - Migrating from one cloud provider to another
 - Refactoring implementation without changing business intent
@@ -37,30 +36,22 @@ This distinction matters when:
 
 ---
 
-## What goes into the VLH
+## Properties of the hash input
 
-```
-VLH = sha256(canonical_json({
-  "problem_statement":          string,
-  "role":                       string,
-  "bau_measure":                string | number,
-  "goal_measure":               string,
-  "business_rules":             sorted list of rule statements,
-  "workflow_definitions":       sorted list of workflow IDs,
-  "api_contracts":              sorted list of endpoint signatures,
-  "functional_equivalence_tests": sorted list of test identifiers,
-  "proof_requirements":         sorted list of proof field IDs,
-  "evidence_requirements":      sorted list of evidence field IDs
-}))
-```
+The VLH is computed over a canonical representation of a system's business
+logic contract. The specific composition of that representation, and the
+canonicalization procedure applied to it, are part of the ValueLogics
+implementation layer and are not published.
 
-**Critical rules for deterministic computation:**
-- JSON keys must be sorted alphabetically (`sort_keys=True`)
-- All string values must be normalized (trim whitespace, lowercase)
-- Lists must be sorted before hashing
-- Encoding: UTF-8
-- No timestamps, no IDs, no file paths in the hash input
-  (those change — the logic does not)
+What the specification does state:
+
+- The input is **semantic**, not syntactic. It describes what the system must
+  do and what it must prove — never how it is implemented.
+- The input is **deterministic**. The same logic contract yields the same hash
+  on any conformant implementation.
+- The input is **order-independent**. Rearranging equivalent content does not
+  change the hash.
+- The output is a 64-character SHA-256 hexadecimal string.
 
 ---
 
@@ -74,11 +65,13 @@ NOT included:
   - Framework names
   - Cloud provider names
   - Package versions
-  - fib_id or sha256_hash (those are record-level fields)
+  - Record-level identifier or integrity fields
   - Any implementation detail
 ```
 
-The VLH captures *what the system must do*, not *how it does it*.
+The VLH captures *what the system must do*, not *how it does it*. Anything that
+changes when the implementation changes is excluded by design — that exclusion
+is what makes the hash stable across regeneration.
 
 ---
 
@@ -88,11 +81,11 @@ The VLH captures *what the system must do*, not *how it does it*.
 1. source_snapshot_hash   ← SHA-256 of original source files
                              (proves what was analyzed)
          ↓
-2. value_logic_hash (VLH) ← SHA-256 of extracted logic contract
+2. value_logic_hash (VLH) ← SHA-256 of the extracted logic contract
                              (proves what business meaning was found)
          ↓
 3. generated_surface_hash ← SHA-256 of emitted artifacts
-                             (proves what was compiled)
+                             (proves what was produced)
          ↓
 4. functional_equiv_hash  ← SHA-256 of behavior test results
                              (proves the generated system behaves correctly)
@@ -101,32 +94,34 @@ The VLH captures *what the system must do*, not *how it does it*.
                              (proves the evidence record is intact)
 ```
 
-Steps 3 and 4 are computed by the VDSC implementation layer.
-Steps 1, 2, and 5 are fields of the draft extended profile
+Each hash serves a distinct audit purpose and they are not interchangeable.
+Steps 1, 2 and 5 are fields of the draft extended profile
 (`drafts/ldr_vlh_extended_profile_draft.json`). They are not AAEI v1.2 fields.
+Steps 3 and 4 are produced by the implementing system.
 
 ---
 
 ## Verification rule
 
 Before any regeneration:
-1. Recompute VLH from current KV value map
-2. Compare to VLH sealed in `scf_contract` at signing
-3. If match → regeneration proceeds
-4. If mismatch → regeneration blocked + diff report showing what changed
 
-The comparison happens inside the vault. The system outputs pass/fail plus a
-diff report. The canonical field list that feeds the hash is not exposed in
-that output.
+1. The current logic contract is re-hashed.
+2. The result is compared against the VLH sealed at signing.
+3. Match → regeneration proceeds.
+4. Mismatch → regeneration is blocked, and a diff report identifies what changed.
+
+The comparison is performed by the implementing system. Its output is a
+pass/fail result and a diff report. Neither the canonical representation nor the
+procedure that produced the hash appears in that output.
 
 ---
 
 ## The VMware parallel
 
-VMware's vMotion could migrate a running virtual machine from one
-physical host to another. The VM's identity — its memory state, CPU
-registers, network connections — was preserved exactly even though the
-underlying hardware changed completely.
+VMware's vMotion could migrate a running virtual machine from one physical host
+to another. The VM's identity — its memory state, CPU registers, network
+connections — was preserved exactly even though the underlying hardware changed
+completely.
 
 The VLH does the same thing for business logic.
 
@@ -137,25 +132,9 @@ The logic identity does not.
 VMware:          virtualizes compute
 ValueLogics:     virtualizes business logic
 
-VMware:          collapses servers into hosts
-ValueLogics:     collapses codebases into value contracts
-
 VMware:          needed VM identity (MAC address, UUID)
 ValueLogics:     needs VLH (logic fingerprint)
 ```
-
----
-
-## Examples
-
-The rows below illustrate what a VLH would be computed from. They are
-examples based on stated line counts, not independently checked results.
-
-| System | VLH would be computed from | Status |
-|--------|----------------------------|--------|
-| Event Concierge HQ | 1,211 KV lines from 8,071 LOC Lovable app | Example |
-| IBM COBOL SAM1/SAM2 | 120 KV lines from 922 LOC COBOL source | Example |
-| Acme Industrial Corp SF | bc_acme_sf_001 VDSC contract | Example |
 
 ---
 
@@ -164,18 +143,13 @@ examples based on stated line counts, not independently checked results.
 LDR measures compression efficiency.
 VLH proves compression was lossless.
 
-```
-LDR alone:   "We compressed 8,071 lines to 1,211 lines."
-VLH alone:   "The logic contract is intact." (but no compression measure)
-LDR + VLH:   "We compressed 85% — and every rule, metric,
-              and proof obligation survived. Cryptographically proven."
-```
+A ratio on its own says only that a system got smaller, which is not a claim
+worth making — a system can be made smaller by discarding behavior. A VLH on its
+own says the logic is intact but carries no measure of what was gained.
 
-The quoted statements above, including "Cryptographically proven", are
-illustrative future-state language showing what each kind of report would
-say. They are not achieved results.
-
-A validated LDR standard report requires both.
+A validated LDR report therefore requires both. This is a rule of the draft
+standard, not an achieved result: no LDR report has yet been independently
+validated under it.
 
 ---
 
@@ -184,10 +158,11 @@ A validated LDR standard report requires both.
 ```json
 {
   "vlh":                  "SHA-256 hex string (64 chars)",
-  "ldr_ratio":            0.15,
+  "ldr_ratio":            "decimal",
   "source_snapshot_hash": "SHA-256 hex string (64 chars)"
 }
 ```
 
 Defined in the draft extended profile
-(`drafts/ldr_vlh_extended_profile_draft.json`). Not part of AAEI v1.2. Unsubmitted.
+(`drafts/ldr_vlh_extended_profile_draft.json`). Not part of AAEI v1.2.
+Unsubmitted.

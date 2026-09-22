@@ -227,8 +227,7 @@ AAEI/
 │       └── conformance_report.json      Machine-readable pass report (July 9, 2026 run)
 │
 ├── docs/                                  Draft material — not part of AAEI v1.2
-│   ├── vlh_spec_v1_0.md                  Draft VLH specification
-│   └── homepage_portable_logic_copy.md   Draft portable-logic copy
+│   └── vlh_spec_v1_0.md                  Draft VLH specification
 │
 └── drafts/                                Draft LDR / VLH extended profile — not part of AAEI v1.2
     ├── README.md

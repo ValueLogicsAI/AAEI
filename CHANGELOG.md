@@ -39,6 +39,17 @@ twelve fields only.
 
 ---
 
+## VLH documentation — September 22, 2026 (PR #4)
+
+- `docs/vlh_spec_v1_0.md` replaced: the canonical field list and
+  canonicalization rules for computing the VLH are no longer published.
+  The document now states only the properties of the hash input. Its DRAFT
+  status and separation from AAEI v1.2 are unchanged.
+- `docs/homepage_portable_logic_copy.md` removed. Marketing copy does not
+  belong in the standards repository.
+
+---
+
 ## Test tooling — September 21, 2026
 
 No change to the AAEI v1.2 schema or to the inline assertions of the 18
@@ -125,6 +136,7 @@ Files:
 - `docs/vlh_spec_v1_0.md` — VLH specification. It is kept in the repository,
   but VLH is not part of AAEI v1.2.
 - `docs/homepage_portable_logic_copy.md` — draft portable-logic copy.
+  Removed from the repository on September 22, 2026 (PR #4).
 
 ### Field groups in the draft profile
 
